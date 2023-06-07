@@ -52,11 +52,11 @@
                                 <th class="border-bottom-0">الفرع</th>
                                 <th class="border-bottom-0">المشروع</th>
                                 <th class="border-bottom-0">المخصص المالي</th>
-                                <th class="border-bottom-0">الرقم</th>
                                 <th class="border-bottom-0">الاستاذ</th>
                                 <th class="border-bottom-0">التاريخ</th>
                                 <th class="border-bottom-0">الوحدة</th>
                                 <th class="border-bottom-0">مقدم الطلب</th>
+                                <th class="border-bottom-0">طباعة</th>
                                 <th class="border-bottom-0">التعديل</th>
                                 <th class="border-bottom-0">حالة الطلب</th>
                                 <th class="border-bottom-0"></th>
@@ -69,11 +69,19 @@
                                     <td>{{ $purchase['subcompany']['subcompany_name'] }}</td>
                                     <td>{{ $purchase['subsubcompany']['subsubcompany_name'] }}</td>
                                     <td>{{ $purchase->financial_provision }}</td>
-                                    <td>{{ $purchase->number }}</td>
                                     <td>{{ $purchase->teacher_name }}</td>
                                     <td>{{ $purchase->date }}</td>
                                     <td>{{ $purchase->teacher_name }}</td>
                                     <td>{{ $purchase->applicant }}</td>
+                                    <td>
+                                        @if($purchase->status_id == 1)
+                                            <a href="{{ route('print.purchase', $purchase->id) }}" class="btn btn-secondary"
+                                           title="طباعة"><i class="fa fa-print"></i></a>
+                                        @else
+                                            <a href="{{ route('print.manager.purchase', $purchase->id) }}" class="btn btn-warning"
+                                               title="طباعة"><i class="fa fa-print"></i></a>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($purchase->status_id == 4)
                                         @elseif($purchase->status_id == 3)
@@ -87,15 +95,15 @@
                                     </td>
                                     <td>
                                         @if($purchase->status_id == 1)
-                                            <button class="btn btn-primary">تم الارسال</button>
+                                            <button class="btn btn-primary" disabled>تم الارسال</button>
                                         @elseif($purchase->status_id == 2)
-                                            <button class="btn btn-warning">تم رفض الطلب</button>
+                                            <button class="btn btn-warning" disabled>تم رفض الطلب</button>
                                         @elseif($purchase->status_id == 7)
-                                            <button class="btn btn-secondary">تم موافقة المدير</button>
+                                            <button class="btn btn-secondary" disabled>تم موافقة المدير</button>
                                         @elseif($purchase->status_id == 3)
-                                            <button class="btn btn-success">تم طلب الشراء</button>
+                                            <button class="btn btn-success" disabled>تم طلب الشراء</button>
                                         @elseif($purchase->status_id == 4)
-                                            <button class="btn btn-danger">تم طلب اصدار دفعة</button>
+                                            <button class="btn btn-danger" disabled>تم طلب اصدار دفعة</button>
                                         @endif
                                     </td>
                                     <td></td>

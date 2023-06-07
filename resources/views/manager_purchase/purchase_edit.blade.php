@@ -281,22 +281,28 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>تاريخ التسليم</label><span style="color: red;">  *</span>
-                    <input type="date" class="form-control" name="delivery_date" value="{{ $purchases->delivery_date }}" placeholder="تاريخ التسليم...">
-                    @error('delivery_date')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
+                    <label for="">شروط السداد</label> <span style="color: red;">  *</span><br>
+                    <div id="paymentRows">
+                        @foreach($multi_payment as $payment)
+                            <div class="paymentRow">
+                                <input type="hidden" name="payment[]" value="{{$payment->id }}">
+                                <div class="paymentRow">
+                                    <label for="batch1">الدفعة 1 :</label>
+                                    <input type="text" class="priceInput form-control" name="payment_price[]" id="batch1" value="{{ $payment->payment_price }}">
+                                    <label for="date1">Date:</label>
+                                    <input type="date" class="dateInput form-control" name="payment_date[]" id="date1" value="{{ $payment->payment_date }}">
+                                </div>
+                            </div>
+                        @endforeach
+                        <button type="button" class="btn btn-primary" id="addRowButton">اضافة دفعة</button>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="">شروط السداد</label> <span style="color: red;">  *</span><br>
-                    <input type="radio" name="terms_payment" id="option1" value="partial"
-                           onclick="showDescriptionField()" @if ($purchases->terms_payment == 'partial') checked @endif> جزئي
-
-                    <input type="radio" name="terms_payment" id="option2" value="total"
-                           onclick="hideDescriptionField()"  @if ($purchases->terms_payment == 'total') checked @endif/> كلي
-                    @error('terms_payment')
+                    <label>تاريخ التسليم</label><span style="color: red;">  *</span>
+                    <input type="date" class="form-control" name="delivery_date" value="{{ $purchases->delivery_date }}" placeholder="تاريخ التسليم...">
+                    @error('delivery_date')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
                 </div>
@@ -305,7 +311,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <div id="descriptionField" @if ($purchases->terms_payment == 'partial') style="display: block;" @else style="display: none;" @endif>
+                    <div id="descriptionField">
                         <div class="form-group">
                             <label for="description">ملاحظات</label>
                             <textarea id="description" name="description"  class="form-control" placeholder="ادخل ملاحظات...">
@@ -318,7 +324,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <input type="submit" class="btn btn-info" value="تعديل طلب الشراء">
+            <input type="submit" class="btn btn-info" value="حفظ">
         </div>
         <br>
     </form>
@@ -331,15 +337,85 @@
 @endsection
 @section('js')
     <script>
-        function showDescriptionField() {
-            var descriptionField = document.getElementById("descriptionField");
-            descriptionField.style.display = "block";
+        // Get necessary DOM elements
+        const paymentForm = document.getElementById("paymentForm");
+        const paymentRows = document.getElementById("paymentRows");
+        const addRowButton = document.getElementById("addRowButton");
+        const totalPriceInput = document.getElementById("total_vat");
+
+        // Add event listener to the "Add Row" button
+        addRowButton.addEventListener("click", addPaymentRow);
+
+        // Add event listener to the form submission
+        paymentForm.addEventListener("submit", validateForm);
+
+        // Function to add a new payment row
+        function addPaymentRow() {
+            const rowCount = paymentRows.childElementCount;
+
+            // Create new row elements
+            const row = document.createElement("div");
+            row.className = "paymentRow";
+            const batchLabel = document.createElement("label");
+            batchLabel.textContent = `الدفعة ${rowCount + 0}:`;
+            row.appendChild(batchLabel);
+
+            const batchInput = document.createElement("input");
+            batchInput.type = "text";
+            batchInput.name = "payment_price[]";
+            batchInput.className = "priceInput form-control";
+            batchInput.required = true;
+            row.appendChild(batchInput);
+
+            const dateLabel = document.createElement("label");
+            dateLabel.textContent = "التاريخ المستحق للدفعة :";
+            row.appendChild(dateLabel);
+
+            const dateInput = document.createElement("input");
+            dateInput.type = "date";
+            dateInput.name = "payment_date[]";
+            dateInput.className = "dateInput form-control";
+            dateInput.required = true;
+            row.appendChild(dateInput);
+
+            // Create remove button
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.textContent = "حذف";
+            removeButton.className = "btn btn-danger";
+            removeButton.addEventListener("click", removePaymentRow);
+            row.appendChild(removeButton);
+
+            // Append the new row to the paymentRows container
+            paymentRows.appendChild(row);
+        }
+        // Function to remove a payment row
+        function removePaymentRow(event) {
+            const row = event.target.parentNode;
+            row.remove();
         }
 
-        function hideDescriptionField() {
-            var descriptionField = document.getElementById("descriptionField");
-            descriptionField.style.display = "none";
+        // Function to validate the form submission
+        function validateForm(event) {
+            const priceInputs = document.getElementsByClassName("priceInput");
+            let totalPrice = parseFloat(totalPriceInput.value);
+            let totalPayments = 0;
+
+            // Calculate the total payments
+            for (let i = 0; i < priceInputs.length; i++) {
+                totalPayments += parseFloat(priceInputs[i].value);
+            }
+
+            // Check if totalPayments exceed the totalPrice
+            if (totalPayments > totalPrice) {
+                event.preventDefault();
+                alert("لا يمكن أن يتجاوز إجمالي الدفعات السعر الإجمالي!!");
+            } else if (totalPayments < totalPrice) {
+                event.preventDefault();
+                alert("إجمالي الدفعات يجب أن يكون على الأقل سعر الإجمالي!!");
+            }
         }
+
     </script>
     <script>
         $(document).on('input', '#quantity', function(res,e) {

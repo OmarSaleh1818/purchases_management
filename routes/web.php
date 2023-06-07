@@ -49,6 +49,9 @@ Route::resource('invoices', InvoicesController::class);
 Route::resource('purchases', PurchasesController::class);
 Route::get('/add/order', [PurchasesController::class, 'AddOrder'])->name('add.order');
 Route::get('/purchases/delete/{id}', [PurchasesController::class, 'PurchaseDelete'])->name('purchase.delete');
+Route::get('/print/purchase/{id}', [PurchasesController::class, 'PrintPurchase'])->name('print.purchase');
+Route::get('/print/manager/purchase/{id}', [PurchasesController::class, 'PrintManagerPurchase'])->name('print.manager.purchase');
+
 // End All Material Order route
 
 
@@ -58,6 +61,10 @@ Route::get('/add/purchase/{id}', [PurchaseOrderController::class, 'AddPurchase']
 Route::get('/purchase/order/edit/{id}', [PurchaseOrderController::class, 'PurchaseOrderEdit'])->name('purchases.order.edit');
 Route::post('/purchase/order/update/{id}', [PurchaseOrderController::class, 'PurchaseOrderUpdate'])->name('purchases.order.update');
 Route::get('/order/delete/{id}', [PurchaseOrderController::class, 'OrderDelete'])->name('order.delete');
+Route::get('/print/order/purchase/{id}', [PurchaseOrderController::class, 'PrintOrderPurchase'])
+    ->name('print.orderpurchase');
+Route::get('/print/manager/order/{id}', [PurchaseOrderController::class, 'PrintManagerOrder'])
+    ->name('print.manager.orderpurchase');
 // End All Purchases Order route
 
 
@@ -68,10 +75,15 @@ Route::get('/payment/purchase/edit/{id}', [PaymentController::class, 'PaymentPur
     ->name('payment.purchase.edit');
 Route::post('/payment/purchase/update/{id}', [PaymentController::class, 'PaymentPurchaseUpdate'])
     ->name('payment.purchase.update');
+Route::get('/print/payment/{id}', [PaymentController::class, 'PrintPayment'])->name('print.payment');
+Route::get('/print/manager/payment/{id}', [PaymentController::class, 'PrintManagerPayment'])->name('print.manager.payment');
 
 Route::get('/add/partial/payment/{id}', [PaymentController::class, 'AddPartialPayment'])->name('add.partial.payment');
 Route::post('/partial/payment/store', [PaymentController::class, 'PartialPaymentStore'])
     ->name('partial.payment.store');
+
+Route::get('/batch/payment/{id}', [PaymentController::class, 'BatchPayment'])
+    ->name('batch.payment');
 // End All Payment Order Route
 
 

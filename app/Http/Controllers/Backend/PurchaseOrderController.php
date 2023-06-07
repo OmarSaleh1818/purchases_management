@@ -8,6 +8,7 @@ use App\Models\PurchaseOrder;
 use App\Models\Purchase;
 use App\Models\multiPurchase;
 use App\Models\MultiPurchaseOrder;
+use App\Models\MultiPayment;
 use App\Models\SubCompany;
 use App\Models\SubSubCompany;
 use Carbon\Carbon;
@@ -47,7 +48,7 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $purchase_id = $request->id;
-
+        $company_name = $request->company_name;
         $request->validate([
             'gentlemen' => 'required',
             'professor_care' => 'required',
@@ -60,7 +61,6 @@ class PurchaseOrderController extends Controller
             'total_vat' => 'required',
             'delivery_location' => 'required',
             'delivery_date' => 'required',
-            'terms_payment' => 'required',
         ],[
             'gentlemen.required' => 'اسم السادة مطلوب',
             'professor_care.required' => 'عناية الاستاذ  مطلوب',
@@ -73,35 +73,43 @@ class PurchaseOrderController extends Controller
             'total_vat.required' => 'الاجمالي بعد الضريبة مطلوب',
             'delivery_location.required' => 'موقع التسليم مطلوب',
             'delivery_date.required' => 'تاريخ التسليم مطلوب',
-            'terms_payment.required' => 'شروط السداد مطلوب',
         ]);
-        $description = $request->input('description');
-
-        $purchaseOrder_id = PurchaseOrder::insertGetId([
-            'gentlemen' => $request->gentlemen,
-            'professor_care' => $request->professor_care,
-            'order_purchase_number' => $request->order_material_id,
-            'order_purchase_date' => $request->order_purchase_date,
-            'order_material_id' => $request->order_material_id,
-            'project_name' => $request->project_name,
-            'project_number' => $request->project_number,
-            'address' => $request->address,
-            'phone_number' => $request->phone_number,
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'financial_provision' => $request->financial_provision,
-            'number' => $request->number,
-            'total' => $request->total,
-            'discount' => $request->discount,
-            'total_discount' => $request->total_discount,
-            'added_vat' => $request->added_vat,
-            'total_vat' => $request->total_vat,
-            'delivery_location' => $request->delivery_location,
-            'delivery_date' => $request->delivery_date,
-            'terms_payment' => $request->terms_payment,
-            'description' => $description,
-            'created_at' => Carbon::now(),
-        ]);
+            $purchaseOrder_id = PurchaseOrder::insertGetId([
+                'company_name' => $company_name,
+                'gentlemen' => $request->gentlemen,
+                'professor_care' => $request->professor_care,
+                'order_purchase_number' => $request->order_material_id,
+                'order_purchase_date' => $request->order_purchase_date,
+                'order_material_id' => $request->order_material_id,
+                'project_name' => $request->project_name,
+                'project_number' => $request->project_number,
+                'address' => $request->address,
+                'phone_number' => $request->phone_number,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'financial_provision' => $request->financial_provision,
+                'number' => $request->number,
+                'total' => $request->total,
+                'discount' => $request->discount,
+                'total_discount' => $request->total_discount,
+                'added_vat' => $request->added_vat,
+                'total_vat' => $request->total_vat,
+                'delivery_location' => $request->delivery_location,
+                'delivery_date' => $request->delivery_date,
+                'description' => $request->description,
+                'created_at' => Carbon::now(),
+            ]);
+            $payment_price = $request->payment_price;
+            $payment_date = $request->payment_date;
+            foreach ($payment_price as $index => $payment) {
+                $s_payment = $payment;
+                $s_date = $payment_date[$index];
+                MultiPayment::insert([
+                    'payment_id' =>$purchaseOrder_id ,
+                    'payment_price' => $s_payment,
+                    'payment_date' => $s_date
+                ]);
+            }
 
         $purchase_name = $request->purchase_name;
         $quantity = $request->quantity;
@@ -193,6 +201,22 @@ class PurchaseOrderController extends Controller
         return redirect('/purchase/order');
     }
 
+    public function PrintOrderPurchase($id) {
+        $purchase = Purchase::all();
+        $purchases = PurchaseOrder::findOrFail($id);
+        $multi_purchas = MultiPurchaseOrder::where('purchaseOrder_id', $id)->get();
+        return view('print.purchase.print_purchase', compact('purchases','purchase', 'multi_purchas'));
+
+    }
+
+    public function PrintManagerOrder($id) {
+        $purchase = Purchase::all();
+        $purchases = PurchaseOrder::findOrFail($id);
+        $multi_purchas = MultiPurchaseOrder::where('purchaseOrder_id', $id)->get();
+        return view('print.purchase.manager_purchase', compact('purchases','purchase', 'multi_purchas'));
+
+    }
+
     /**
      * Display the specified resource.
      */
@@ -208,6 +232,7 @@ class PurchaseOrderController extends Controller
     {
         $purchase = Purchase::all();
         $purchases = PurchaseOrder::findOrFail($id);
+
         return view('purchases.order_edit', compact('purchases', 'purchase'));
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Models\multiPurchase;
 use App\Models\MultiPurchaseOrder;
+use App\Models\MultiPayment;
 use App\Models\Payment;
 use App\Models\PartialPayment;
 use App\Models\PurchaseOrder;
@@ -25,7 +26,9 @@ class ManagerPurchaseController extends Controller
 
         $purchases = PurchaseOrder::findOrFail($id);
         $multi_purchase = MultiPurchaseOrder::where('purchaseOrder_id', $id)->get();
-        return view('manager_purchase.purchase_edit', compact('purchases', 'multi_purchase'));
+        $multi_payment = MultiPayment::where('payment_id', $id)->get();
+        return view('manager_purchase.purchase_edit', compact('purchases',
+            'multi_purchase', 'multi_payment'));
     }
 
     public function ManagerPurchaseUpdate(Request $request, $id) {
@@ -41,7 +44,6 @@ class ManagerPurchaseController extends Controller
             'total_vat' => 'required',
             'delivery_location' => 'required',
             'delivery_date' => 'required',
-            'terms_payment' => 'required',
         ],[
             'gentlemen.required' => 'اسم السادة مطلوب',
             'professor_care.required' => 'عناية الاستاذ  مطلوب',
@@ -53,33 +55,41 @@ class ManagerPurchaseController extends Controller
             'total_vat.required' => 'الاجمالي بعد الضريبة مطلوب',
             'delivery_location.required' => 'موقع التسليم مطلوب',
             'delivery_date.required' => 'تاريخ التسليم مطلوب',
-            'terms_payment.required' => 'شروط السداد مطلوب',
         ]);
-
-        PurchaseOrder::findOrFail($id)->update([
-            'gentlemen' => $request->gentlemen,
-            'professor_care' => $request->professor_care,
-            'order_purchase_date' => $request->order_purchase_date,
-            'order_material_id' => $request->order_material_id,
-            'project_name' => $request->project_name,
-            'project_number' => $request->project_number,
-            'address' => $request->address,
-            'phone_number' => $request->phone_number,
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'financial_provision' => $request->financial_provision,
-            'number' => $request->number,
-            'total' => $request->total,
-            'discount' => $request->discount,
-            'total_discount' => $request->total_discount,
-            'added_vat' => $request->added_vat,
-            'total_vat' => $request->total_vat,
-            'delivery_location' => $request->delivery_location,
-            'delivery_date' => $request->delivery_date,
-            'terms_payment' => $request->terms_payment,
-            'description' => $request->description,
-            'created_at' => Carbon::now(),
-        ]);
+            PurchaseOrder::findOrFail($id)->update([
+                'gentlemen' => $request->gentlemen,
+                'professor_care' => $request->professor_care,
+                'order_purchase_number' => $request->order_material_id,
+                'order_purchase_date' => $request->order_purchase_date,
+                'order_material_id' => $request->order_material_id,
+                'project_name' => $request->project_name,
+                'project_number' => $request->project_number,
+                'address' => $request->address,
+                'phone_number' => $request->phone_number,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'financial_provision' => $request->financial_provision,
+                'number' => $request->number,
+                'total' => $request->total,
+                'discount' => $request->discount,
+                'total_discount' => $request->total_discount,
+                'added_vat' => $request->added_vat,
+                'total_vat' => $request->total_vat,
+                'delivery_location' => $request->delivery_location,
+                'delivery_date' => $request->delivery_date,
+                'description' => $request->description,
+                'created_at' => Carbon::now(),
+            ]);
+            $multiIds = $request->input('payment');
+            $payment_price = $request->input('payment_price');
+            $payment_date = $request->input('payment_date');
+            foreach ($multiIds as $key => $multiId) {
+                $data = [
+                    'payment_price' => $payment_price[$key],
+                    'payment_date' => $payment_date[$key],
+                ];
+                MultiPayment::where('id', $multiId)->update($data);
+            }
         $multiIds = $request->input('multi');
         $purchaseNames = $request->input('purchase_name');
         $quantities = $request->input('quantity');
@@ -125,14 +135,14 @@ class ManagerPurchaseController extends Controller
 
     public function ManagerPaymentView() {
 
-        $partials = PartialPayment::orderBy('status_id', 'ASC')->orderBy('id', 'DESC')->get();
+        $partials = PartialPayment::orderBy('id', 'ASC')->get();
         $payments = Payment::orderBy('status_id', 'ASC')->orderBy('id', 'DESC')->get();
         return view('manager_purchase.payment_view', compact( 'payments', 'partials'));
     }
 
     public function ManagerPaymentEdit($id) {
 
-        $payment = Payment::findOrFail($id);
+        $payment = PartialPayment::findOrFail($id);
         return view('manager_purchase.payment_edit', compact('payment'));
     }
 
@@ -140,7 +150,7 @@ class ManagerPurchaseController extends Controller
 
         // Set cURL options
         $url = 'https://ahsibli.com/wp-admin/admin-ajax.php?action=date_numbers_1';
-        $data = 'number='.$request->price;
+        $data = 'number='.$request->batch_payment;
 
         $options = array(
             CURLOPT_URL => $url,
@@ -191,7 +201,7 @@ class ManagerPurchaseController extends Controller
             'date' => 'required',
             'gentlemen' => 'required',
             'supplier_name' => 'required',
-            'price' => 'required',
+            'batch_payment' => 'required',
             'due_date' => 'required',
             'financial_provision' => 'required',
             'number' => 'required',
@@ -200,21 +210,21 @@ class ManagerPurchaseController extends Controller
             'date.required' => 'التاريخ  مطلوب',
             'gentlemen.required' => 'اسم السادة مطلوب',
             'supplier_name.required' => 'اسم المورد مطلوب',
-            'price.required' => 'المبلغ مطلوب',
+            'batch_payment.required' => 'المبلغ مطلوب',
             'due_date.required' => 'التاريخ المستحق للدفعة مطلوب',
             'financial_provision.required' => 'المخصص المالي مطلوب',
             'number.required' => 'الرقم مطلوب',
             'bank_name.required' => 'البنك المسحوب عليه مطلوب',
         ]);
 
-        Payment::findOrFail($id)->update([
+        PartialPayment::findOrFail($id)->update([
             'date' => $request->date,
             'project_name' => $request->project_name,
             'project_number' => $request->project_number,
             'order_purchase_id' => $request->order_purchase_id,
             'gentlemen' => $request->gentlemen,
             'supplier_name' => $request->supplier_name,
-            'price' => $request->price,
+            'batch_payment' => $request->batch_payment,
             'price_name' => $result,
             'due_date' => $request->due_date,
             'purchase_name' => $request->purchase_name,
@@ -224,13 +234,13 @@ class ManagerPurchaseController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        $request->session()->flash('status', 'تم تعديل  اصدار طلب دفعة بنجاح');
+        $request->session()->flash('status', 'تم حفظ  اصدار طلب دفعة بنجاح');
         return redirect('/manager/payment');
     }
 
     public function ManagerPaymentReject($id) {
 
-        DB::table('payments')
+        DB::table('partial_payments')
             ->where('id', $id)
             ->update(['status_id' => 2]);
         Session()->flash('status', 'تم رفض الطلب بنجاح');
@@ -239,7 +249,7 @@ class ManagerPurchaseController extends Controller
 
     public function ManagerPaymentSure($id) {
 
-        DB::table('payments')
+        DB::table('partial_payments')
             ->where('id', $id)
             ->update(['status_id' => 7]);
         Session()->flash('status', 'تم تاكيد الطلب بنجاح');

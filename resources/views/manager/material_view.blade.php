@@ -49,11 +49,11 @@
                                 <th class="border-bottom-0">الفرع</th>
                                 <th class="border-bottom-0">المشروع</th>
                                 <th class="border-bottom-0">المخصص المالي</th>
-                                <th class="border-bottom-0">الرقم</th>
                                 <th class="border-bottom-0">الاستاذ</th>
                                 <th class="border-bottom-0">التاريخ</th>
                                 <th class="border-bottom-0">الوحدة</th>
                                 <th class="border-bottom-0">مقدم الطلب</th>
+                                <th class="border-bottom-0">طباعة</th>
                                 <th class="border-bottom-0">التعديل</th>
                                 <th class="border-bottom-0">حالة الطلب</th>
                                 <th class="border-bottom-0"></th>
@@ -66,11 +66,22 @@
                                     <td>{{ $purchase['subcompany']['subcompany_name'] }}</td>
                                     <td>{{ $purchase['subsubcompany']['subsubcompany_name'] }}</td>
                                     <td>{{ $purchase->financial_provision }}</td>
-                                    <td>{{ $purchase->number }}</td>
                                     <td>{{ $purchase->teacher_name }}</td>
                                     <td>{{ $purchase->date }}</td>
                                     <td>{{ $purchase->teacher_name }}</td>
                                     <td>{{ $purchase->applicant }}</td>
+                                    <td>
+                                        @if($purchase->status_id == 1)
+                                            <a href="{{ route('print.purchase', $purchase->id) }}" class="btn btn-secondary"
+                                               title="طباعة"><i class="fa fa-print"></i></a>
+                                        @elseif($purchase->status_id == 2)
+                                            <a href="{{ route('print.purchase', $purchase->id) }}" class="btn btn-danger"
+                                               title="طباعة"><i class="fa fa-print"></i></a>
+                                        @else
+                                            <a href="{{ route('print.manager.purchase', $purchase->id) }}" class="btn btn-warning"
+                                               title="طباعة"><i class="fa fa-print"></i></a>
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{ route('material.edit', $purchase->id) }}" class="btn btn-info"
                                            title="عرض الطلب"><i class="las la-eye"></i></a>

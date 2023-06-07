@@ -17,6 +17,12 @@ class Purchase extends Model
 
     }
 
+    public function company() {
+
+        return $this->belongsTo(Company::class, 'company_id','id');
+
+    }
+
     public function subcompany() {
 
         return $this->belongsTo(SubCompany::class, 'subcompany_id','id');

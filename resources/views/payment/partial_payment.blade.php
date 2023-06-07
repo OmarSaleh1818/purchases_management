@@ -4,6 +4,7 @@
 @endsection
 @section('css')
 @endsection
+
 @section('page-header')
     <!-- breadcrumb -->
     <div class="breadcrumb-header justify-content-between">
@@ -22,6 +23,7 @@
         @csrf
         <input type="hidden" name="id" value="{{ $purchases->id }}" >
         <input type="hidden" name="purchase_id" value="{{ $purchases->order_purchase_number }}" >
+        <input type="hidden" name="company_name" value="{{ $purchases->company_name }}">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -33,6 +35,37 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <div class="row">
+            @foreach($multi_payment as $key => $item)
+                <input type="hidden" name="multi_payment[{{ $key }}][payment_id]" value="{{ $item->payment_id }}">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>الدفعة{{ $key+1 }} </label><span style="color: red;">  *</span>
+                        <input type="text" class="form-control" name="multi_payment[{{ $key }}][payment_price]" value="{{ $item->payment_price }}" placeholder="المبلغ...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>التاريخ المستحق للدفعة</label><span style="color: red;">  *</span>
+                        <input type="date" class="form-control" name="multi_payment[{{ $key }}][payment_date]" value="{{ $item->payment_date }}" placeholder="التاريخ المستحق للدفعة...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    @if($item->paid == 0)
+                        <a href="{{ route('batch.payment', $item->id) }}" class="btn btn-info">ارسل طلب الدفعة {{ $key+1 }}</a>
+                    @elseif($item->paid == 1)
+                        <input type="hidden" name="multi_payment[{{ $key }}][paid_payment][payment_price]" value="{{ $item->payment_price }}">
+                        <input type="hidden" name="multi_payment[{{ $key }}][paid_payment][payment_date]" value="{{ $item->payment_date }}">
+                        <button class="btn btn-danger" disabled>تم ارسال طلب الدفعة {{ $key+1 }}</button>
+                        @php
+                            $paidPayment = true;
+                        @endphp
+                    @endif
+                </div>
+            @endforeach
+        </div>
+        <hr>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -94,26 +127,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>المبلغ</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="price" value="{{ $purchases->total_vat }}" placeholder="المبلغ...">
-                    @error('price')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>التاريخ المستحق للدفعة</label><span style="color: red;">  *</span>
-                    <input type="date" class="form-control" name="due_date" value="{{ $purchases->delivery_date }}" placeholder="التاريخ المستحق للدفعة...">
-                    @error('due_date')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-        </div>
-        <div class="row">
             @foreach($multi_purchase as $multi)
                 <div class="col-md-6">
                     <div class="form-group">
@@ -156,7 +169,14 @@
                     @enderror
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>السعر الاجمالي</label><span style="color: red;">  *</span>
+                    <input type="text" class="form-control" name="price" value="{{ $purchases->total_vat }}" placeholder="البنك المسحوب عليه...">
+                </div>
+            </div>
         </div>
+
         <div class="d-flex justify-content-between">
             <input type="submit" class="btn btn-info" value="تأكيد الطلب">
         </div>

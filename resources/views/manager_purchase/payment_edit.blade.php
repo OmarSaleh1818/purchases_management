@@ -84,8 +84,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>المبلغ</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="price" value="{{ $payment->price }}">
+                    <label>الدفعة </label><span style="color: red;">  *</span>
+                    <input type="text" class="form-control" name="batch_payment" value="{{ $payment->batch_payment }}">
                     @error('price')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
@@ -142,7 +142,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between">
-            <input type="submit" class="btn btn-info" value="تعديل الطلب">
+            <input type="submit" class="btn btn-info" value="حفظ">
         </div>
         <br>
     </form>

@@ -179,6 +179,28 @@ class PurchasesController extends Controller
 
     }
 
+    public function PrintPurchase($id) {
+
+        $companies = Company::all();
+        $subcompanies = SubCompany::all();
+        $subsubcompanies = SubSubCompany::all();
+        $multi_purchase = multiPurchase::where('purchase_id', $id)->get();
+        $purchases = Purchase::findOrFail($id);
+        return view('print.material.print_material', compact('companies', 'subcompanies'
+        , 'subsubcompanies', 'multi_purchase', 'purchases'));
+    }
+
+    public function PrintManagerPurchase($id) {
+
+        $companies = Company::all();
+        $subcompanies = SubCompany::all();
+        $subsubcompanies = SubSubCompany::all();
+        $multi_purchase = multiPurchase::where('purchase_id', $id)->get();
+        $purchases = Purchase::findOrFail($id);
+        return view('print.material.manager_material', compact('companies', 'subcompanies'
+            , 'subsubcompanies', 'multi_purchase', 'purchases'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -49,11 +49,11 @@
                                 <th class="border-bottom-0">الفرع</th>
                                 <th class="border-bottom-0">المشروع</th>
                                 <th class="border-bottom-0">المخصص المالي</th>
-                                <th class="border-bottom-0">الرقم</th>
                                 <th class="border-bottom-0">الاستاذ</th>
                                 <th class="border-bottom-0">التاريخ</th>
                                 <th class="border-bottom-0">الوحدة</th>
                                 <th class="border-bottom-0">مقدم الطلب</th>
+                                <th class="border-bottom-0">طباعة</th>
                                 <th class="border-bottom-0">التعديل</th>
                                 <th class="border-bottom-0">حالة الطلب</th>
                                 <th class="border-bottom-0"></th>
@@ -67,11 +67,19 @@
                                         <td>{{ $item['subcompany']['subcompany_name'] }}</td>
                                         <td>{{ $item['subsubcompany']['subsubcompany_name'] }}</td>
                                         <td>{{ $item->financial_provision }}</td>
-                                        <td>{{ $item->number }}</td>
                                         <td>{{ $item->teacher_name }}</td>
                                         <td>{{ $item->date }}</td>
                                         <td>{{ $item->teacher_name }}</td>
                                         <td>{{ $item->applicant }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.purchase', $item->id) }}" class="btn btn-secondary"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.purchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($item->status_id == 4)
 
@@ -97,11 +105,19 @@
                                         <td>{{ $item['subcompany']['subcompany_name'] }}</td>
                                         <td>{{ $item['subsubcompany']['subsubcompany_name'] }}</td>
                                         <td>{{ $item->financial_provision }}</td>
-                                        <td>{{ $item->number }}</td>
                                         <td>{{ $item->teacher_name }}</td>
                                         <td>{{ $item->date }}</td>
                                         <td>{{ $item->teacher_name }}</td>
                                         <td>{{ $item->applicant }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.purchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.purchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
                                         <td>
 
                                         </td>
@@ -122,11 +138,19 @@
                                         <td>{{ $item['subcompany']['subcompany_name'] }}</td>
                                         <td>{{ $item['subsubcompany']['subsubcompany_name'] }}</td>
                                         <td>{{ $item->financial_provision }}</td>
-                                        <td>{{ $item->number }}</td>
                                         <td>{{ $item->teacher_name }}</td>
                                         <td>{{ $item->date }}</td>
                                         <td>{{ $item->teacher_name }}</td>
                                         <td>{{ $item->applicant }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.purchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.purchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
                                         <td>
 
 

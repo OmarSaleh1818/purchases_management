@@ -22,8 +22,9 @@
         @csrf
 
         <input type="hidden" name="id" value=" {{ $purchase->id }} ">
+        <input type="hidden" name="company_name" value="{{ $purchase['company']['company_name'] }}">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>السادة</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="gentlemen" required placeholder="اسم السادة...">
@@ -32,7 +33,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>عناية الاستاذ</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="professor_care" placeholder="عناية الاستاذ...">
@@ -41,9 +42,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>رقم طلب المواد</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="order_material_id" value="{{ $purchase->id }}" readonly>
@@ -52,7 +51,9 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>تاريخ طلب الشراء</label><span style="color: red;">  *</span>
                     <input type="date" class="form-control" name="order_purchase_date" id="dateInput"
@@ -62,9 +63,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>اسم المشروع</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="project_name" value="{{ $purchase['subsubcompany']['subsubcompany_name'] }}" readonly>
@@ -73,7 +72,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>رقم المشروع</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="project_number" value="{{ $purchase->subsubcompany_id }}" readonly>
@@ -84,7 +83,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>العنوان</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="address" placeholder="العنوان...">
@@ -93,7 +92,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>رقم التلفون</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="phone_number" placeholder="رقم التلفون...">
@@ -102,9 +101,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>الايميل</label><span style="color: red;">  *</span>
                     <input type="email" class="form-control" name="email" placeholder="الايميل...">
@@ -113,7 +110,9 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>الموضوع</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="subject" placeholder="الموضوع...">
@@ -122,9 +121,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>المخصص المالي</label>
                     <input type="text" class="form-control" name="financial_provision" value="{{ $purchase->financial_provision }}" placeholder="المخصص المالي...">
@@ -133,7 +130,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>الرقم</label>
                     <input type="text" class="form-control" name="number" value="{{ $purchase->number }}" placeholder="الرقم...">
@@ -279,19 +276,23 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>تاريخ التسليم</label><span style="color: red;">  *</span>
-                    <input type="date" class="form-control" name="delivery_date" id="dateInput1" placeholder="تاريخ التسليم...">
-                    @error('delivery_date')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
+                    <label for="">شروط السداد</label> <span style="color: red;">  *</span><br>
+                    <div id="paymentRows">
+                        <div class="paymentRow">
+                            <label for="batch1">الدفعة 1 :</label>
+                            <input type="text" class="priceInput form-control" name="payment_price[]" id="batch1" required>
+                            <label for="date1">التاريخ المستحق للدفعة :</label>
+                            <input type="date" class="dateInput form-control" name="payment_date[]" id="date1" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addRowButton">اضافة دفعة</button>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="">شروط السداد</label> <span style="color: red;">  *</span><br>
-                    <input type="radio" name="terms_payment" id="option1" value="partial" onclick="showDescriptionField()"/> جزئي
-                    <input type="radio" name="terms_payment" id="option2" value="total" onclick="hideDescriptionField()"/> كلي
-                    @error('terms_payment')
+                    <label>تاريخ التسليم</label><span style="color: red;">  *</span>
+                    <input type="date" class="form-control" name="delivery_date" id="dateInput1" placeholder="تاريخ التسليم...">
+                    @error('delivery_date')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
                 </div>
@@ -300,30 +301,15 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <div id="descriptionField" style="display: none;">
                         <div class="form-group">
                             <label for="description">ملاحظات</label>
                             <textarea id="description" name="description"  class="form-control" placeholder="ادخل ملاحظات..."></textarea>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
 
-            <div id="paymentRows">
-                <div class="paymentRow">
-                    <label for="batch1">الدفعة 1:</label>
-                    <input type="number" class="priceInput form-control" id="batch1" required>
-                    <label for="date1">Date:</label>
-                    <input type="date" class="dateInput form-control" id="date1" required>
-                </div>
-            </div>
-
-            <button type="button" id="addRowButton">Add Row</button>
-        </div>
         <br>
-
 
         <div class="d-flex justify-content-between">
             <input type="submit" class="btn btn-info" value="ارسال طلب الشراء">
@@ -358,29 +344,43 @@
             // Create new row elements
             const row = document.createElement("div");
             row.className = "paymentRow";
-
             const batchLabel = document.createElement("label");
-            batchLabel.textContent = `الدفعة ${rowCount + 1}:`;
+            batchLabel.textContent = `الدفعة ${rowCount + 0}:`;
             row.appendChild(batchLabel);
 
             const batchInput = document.createElement("input");
-            batchInput.type = "number";
-            batchInput.className = "priceInput";
+            batchInput.type = "text";
+            batchInput.name = "payment_price[]";
+            batchInput.className = "priceInput form-control";
             batchInput.required = true;
             row.appendChild(batchInput);
 
             const dateLabel = document.createElement("label");
-            dateLabel.textContent = "Date:";
+            dateLabel.textContent = "التاريخ المستحق للدفعة :";
             row.appendChild(dateLabel);
 
             const dateInput = document.createElement("input");
             dateInput.type = "date";
-            dateInput.className = "dateInput";
+            dateInput.name = "payment_date[]";
+            dateInput.className = "dateInput form-control";
             dateInput.required = true;
             row.appendChild(dateInput);
 
+            // Create remove button
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.textContent = "حذف";
+            removeButton.className = "btn btn-danger";
+            removeButton.addEventListener("click", removePaymentRow);
+            row.appendChild(removeButton);
+
             // Append the new row to the paymentRows container
             paymentRows.appendChild(row);
+        }
+        // Function to remove a payment row
+        function removePaymentRow(event) {
+            const row = event.target.parentNode;
+            row.remove();
         }
 
         // Function to validate the form submission
@@ -397,21 +397,13 @@
             // Check if totalPayments exceed the totalPrice
             if (totalPayments > totalPrice) {
                 event.preventDefault();
-                alert("Total payments cannot exceed the total price!");
+                alert("لا يمكن أن يتجاوز إجمالي الدفعات السعر الإجمالي!!");
+            } else if (totalPayments < totalPrice) {
+                event.preventDefault();
+                alert("إجمالي الدفعات يجب أن يكون على الأقل سعر الإجمالي!!");
             }
         }
 
-    </script>
-    <script>
-        function showDescriptionField() {
-            var descriptionField = document.getElementById("descriptionField");
-            descriptionField.style.display = "block";
-        }
-
-        function hideDescriptionField() {
-            var descriptionField = document.getElementById("descriptionField");
-            descriptionField.style.display = "none";
-        }
     </script>
     <script>
         // Select the input field

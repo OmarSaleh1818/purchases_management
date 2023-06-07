@@ -24,15 +24,6 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>رقم طلب اصدار دفعة</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="number_order" value="{{$payment->number_order}}">
-                    @error('number_order')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
                     <label>رقم طلب الشراء</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="order_purchase_id" value="{{ $payment->order_purchase_id }}" readonly>
                     @error('order_purchase_id')
@@ -40,8 +31,6 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>التاريخ</label><span style="color: red;">  *</span>
@@ -51,6 +40,8 @@
                     @enderror
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>اسم المشروع</label><span style="color: red;">  *</span>
@@ -60,8 +51,6 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>رقم المشروع</label><span style="color: red;">  *</span>
@@ -71,6 +60,8 @@
                     @enderror
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>السادة</label><span style="color: red;">  *</span>
@@ -80,8 +71,6 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>اسم المرد/المقاول حسب السجل التجاري</label><span style="color: red;">  *</span>
@@ -91,22 +80,13 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>المبلغ</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="price" value="{{ $payment->price }}">
-                    @error('price')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>المبلغ كتابة</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="price_name" value="{{ $payment->price_name }}">
-                    @error('price_name')
+                    <label>الدفعة </label><span style="color: red;">  *</span>
+                    <input type="text" class="form-control" name="batch_payment" value="{{ $payment->batch_payment }}">
+                    @error('price')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
                 </div>
@@ -162,7 +142,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between">
-            <input type="submit" class="btn btn-info" value="تأكيد الطلب">
+            <input type="submit" class="btn btn-info" value="حفظ">
         </div>
         <br>
     </form>

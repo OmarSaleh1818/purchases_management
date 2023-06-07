@@ -51,9 +51,9 @@
                                 <th class="border-bottom-0">تاريخ طلب الشراء</th>
                                 <th class="border-bottom-0">الموضوع</th>
                                 <th class="border-bottom-0">العنوان</th>
-                                <th class="border-bottom-0">موقع التسليم</th>
                                 <th class="border-bottom-0">تاريخ التسليم</th>
                                 <th class="border-bottom-0">الاجمالي بعد الضريبة</th>
+                                <th class="border-bottom-0">طباعة</th>
                                 <th class="border-bottom-0">التعديل</th>
                                 <th class="border-bottom-0">حالة الطلب</th>
                                 <th class="border-bottom-0"></th>
@@ -69,19 +69,23 @@
                                     <td>{{ $item->order_purchase_date }}</td>
                                     <td>{{ $item->subject }}</td>
                                     <td>{{ $item->address }}</td>
-                                    <td>{{ $item->delivery_location }}</td>
                                     <td>{{ $item->delivery_date }}</td>
                                     <td>{{ $item->total_vat }}</td>
+                                    <td>
+                                        @if($item->status_id == 1)
+                                            <a href="{{ route('print.orderpurchase', $item->id) }}" class="btn btn-warning"
+                                               title="طباعة"><i class="fa fa-print"></i></a>
+                                        @else
+                                            <a href="{{ route('print.manager.orderpurchase', $item->id) }}" class="btn btn-warning"
+                                               title="طباعة"><i class="fa fa-print"></i></a>
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{ route('payment.purchase.edit', $item->id) }}" class="btn btn-info"
                                            title="عرض الطلب"><i class="las la-eye"></i></a>
                                     </td>
                                     <td>
-                                        @if($item->terms_payment == 'partial')
-                                            <a href="{{ route('add.partial.payment', $item->id) }}" class="btn btn-primary">طلب اصدار جزئي</a>
-                                        @else
-                                            <a href="{{ route('add.payment', $item->id) }}" class="btn btn-primary">طلب اصدار نهائي</a>
-                                        @endif
+                                        <a href="{{ route('add.partial.payment', $item->id) }}" class="btn btn-primary">طلب اصدار دفعة</a>
                                     </td>
                                     <td></td>
                                 </tr>
@@ -93,13 +97,22 @@
                                         <td>{{ $item->order_purchase_date }}</td>
                                         <td>{{ $item->subject }}</td>
                                         <td>{{ $item->address }}</td>
-                                        <td>{{ $item->delivery_location }}</td>
                                         <td>{{ $item->delivery_date }}</td>
                                         <td>{{ $item->total_vat }}</td>
                                         <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.orderpurchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.orderpurchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
                                         </td>
                                         <td>
-                                            <button class="btn btn-success">تم طلب اصدار دفعة</button>
+
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('add.partial.payment', $item->id) }}" class="btn btn-success">تم طلب اصدار الدفعة</a>
                                         </td>
                                         <td></td>
                                     </tr>
@@ -111,9 +124,17 @@
                                         <td>{{ $item->order_purchase_date }}</td>
                                         <td>{{ $item->subject }}</td>
                                         <td>{{ $item->address }}</td>
-                                        <td>{{ $item->delivery_location }}</td>
                                         <td>{{ $item->delivery_date }}</td>
                                         <td>{{ $item->total_vat }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.orderpurchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.orderpurchase', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('payment.purchase.edit', $item->id) }}" class="btn btn-info"
                                                title="عرض الطلب"><i class="las la-eye"></i></a>
