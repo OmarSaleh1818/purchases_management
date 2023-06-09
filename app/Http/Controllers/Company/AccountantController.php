@@ -134,7 +134,7 @@ class AccountantController extends Controller
     public function AccountEyeUpdate(Request $request, $id) {
 // Set cURL options
         $url = 'https://ahsibli.com/wp-admin/admin-ajax.php?action=date_numbers_1';
-        $data = 'number='.$request->price;
+        $data = 'number='.$request->batch_payment;
 
         $options = array(
             CURLOPT_URL => $url,
@@ -185,7 +185,6 @@ class AccountantController extends Controller
             'date' => 'required',
             'gentlemen' => 'required',
             'supplier_name' => 'required',
-            'price' => 'required',
             'due_date' => 'required',
             'financial_provision' => 'required',
             'number' => 'required',
@@ -194,7 +193,6 @@ class AccountantController extends Controller
             'date.required' => 'التاريخ  مطلوب',
             'gentlemen.required' => 'اسم السادة مطلوب',
             'supplier_name.required' => 'اسم المورد مطلوب',
-            'price.required' => 'المبلغ مطلوب',
             'due_date.required' => 'التاريخ المستحق للدفعة مطلوب',
             'financial_provision.required' => 'المخصص المالي مطلوب',
             'number.required' => 'الرقم مطلوب',
@@ -208,7 +206,7 @@ class AccountantController extends Controller
             'order_purchase_id' => $request->order_purchase_id,
             'gentlemen' => $request->gentlemen,
             'supplier_name' => $request->supplier_name,
-            'price' => $request->price,
+            'batch_payment' => $request->batch_payment,
             'price_name' => $result,
             'due_date' => $request->due_date,
             'purchase_name' => $request->purchase_name,
@@ -245,8 +243,9 @@ class AccountantController extends Controller
 
     public function FinanceUpdate(Request $request, $id) {
 
+
         $url = 'https://ahsibli.com/wp-admin/admin-ajax.php?action=date_numbers_1';
-        $data = 'number='.$request->price;
+        $data = 'number='.$request->batch_payment;
 
         $options = array(
             CURLOPT_URL => $url,
@@ -294,37 +293,33 @@ class AccountantController extends Controller
         }
 
         $request->validate([
-            'number_order' => 'required',
             'date' => 'required',
             'gentlemen' => 'required',
             'supplier_name' => 'required',
-            'price' => 'required',
-            'price_name' => 'required',
+            'batch_payment' => 'required',
             'due_date' => 'required',
             'financial_provision' => 'required',
             'number' => 'required',
             'bank_name' => 'required',
-        ],[
-            'number_order.required' => 'رقم اصدار طلب دفعة مطلوب',
+        ], [
             'date.required' => 'التاريخ  مطلوب',
             'gentlemen.required' => 'اسم السادة مطلوب',
             'supplier_name.required' => 'اسم المورد مطلوب',
-            'price.required' => 'المبلغ مطلوب',
-            'price_name.required' => 'المبلغ كتابة مطلوب',
+            'batch_payment.required' => 'المبلغ مطلوب',
             'due_date.required' => 'التاريخ المستحق للدفعة مطلوب',
             'financial_provision.required' => 'المخصص المالي مطلوب',
             'number.required' => 'الرقم مطلوب',
             'bank_name.required' => 'البنك المسحوب عليه مطلوب',
         ]);
-        Payment::findOrFail($id)->update([
-            'number_order' => $request->number_order,
+
+        PartialPayment::findOrFail($id)->update([
             'date' => $request->date,
             'project_name' => $request->project_name,
             'project_number' => $request->project_number,
             'order_purchase_id' => $request->order_purchase_id,
             'gentlemen' => $request->gentlemen,
             'supplier_name' => $request->supplier_name,
-            'price' => $request->price,
+            'batch_payment' => $request->batch_payment,
             'price_name' => $result,
             'due_date' => $request->due_date,
             'purchase_name' => $request->purchase_name,
@@ -334,7 +329,7 @@ class AccountantController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        $request->session()->flash('status', 'تم تعديل اصدار طلب دفعة بنجاح');
+        $request->session()->flash('status', 'تم حفظ اصدار طلب دفعة بنجاح');
         return redirect('/finance');
     }
     public function FinanceEye($id) {

@@ -60,12 +60,12 @@
                             </div>
                             <div class="col-md">
                                 <h5 class="invoice-info"><span>رقم طلب الشراء :</span>
-                                    <span>{{ $purchases->order_purchase_number }}</span></h5>
+                                    <span>{{ $purchases->id }}</span></h5>
                                 <br>
                                 <h5 class="invoice-info"><span>تاريخ طلب الشراء :</span>
                                     <span>{{ $purchases->order_purchase_date }}</span></h5>
                                 <br>
-                                <h5 class="invoice-info"><span>اسم المشروع</span>
+                                <h5 class="invoice-info"><span>اسم المشروع :</span>
                                     <span>{{ $purchases->project_name }}</span></h5>
                                 <br>
                                 <h5 class="invoice-info"><span>رقم المشروع :</span>
@@ -86,7 +86,7 @@
                                     <th>البيان</th>
                                     <th>الوحدة</th>
                                     <th>الكمية</th>
-                                    <th>الكمية</th>
+                                    <th>رقم الموديل</th>
                                     <th>السعر</th>
                                     <th>الاجمالي</th>
                                 </tr>
@@ -148,7 +148,7 @@
                                 <br>
                                 <br>
                                 <h5 class="invoice-info"><span>اعتماد الادارة : </span>
-                                    <span>لم يتم الاعتماد</span></h5>
+                                    <span>لم يعتمد</span></h5>
                                 <br>
                                 <br>
                                 <h5 class="invoice-info"><span>شروط السداد :</span>

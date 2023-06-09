@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('currency_type');
             $table->string('just');
             $table->string('bank_name');
-            $table->bigInteger('check_number');
-            $table->bigInteger('iban_number');
+            $table->string('check_number');
+            $table->string('iban_number');
             $table->string('project_name');
             $table->integer('project_number');
             $table->string('financial_provision');

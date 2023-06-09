@@ -48,6 +48,7 @@
                         <ul class="slide-menu">
                             <li><a class="slide-item" href="{{ url('/' . $page='accountant') }}">طلبات اصدار دفعة</a></li>
                             <li><a class="slide-item" href="{{ url('/' . $page='command/pay') }}">امر دفع نقدي/بنكي</a></li>
+                            <li><a class="slide-item" href="{{ url('/' . $page='account/receipt') }}">سندات الصرف</a></li>
                         </ul>
                     </li>
                     <li class="side-item side-item-category">الادارة المالية</li>
@@ -60,6 +61,7 @@
                         <ul class="slide-menu">
                             <li><a class="slide-item" href="{{ url('/' . $page='finance') }}">طلبات اصدار دفعة</a></li>
                             <li><a class="slide-item" href="{{ url('/' . $page='finance/command') }}">طلبات امر اصدار دفعة</a></li>
+                            <li><a class="slide-item" href="{{ url('/' . $page='finance/receipt') }}">سندات الصرف</a></li>
                         </ul>
                     </li>
                     <li class="side-item side-item-category">المدير العام</li>
@@ -76,6 +78,7 @@
                             <li><a class="slide-item" href="{{ url('/' . $page='manager') }}">طلبات المحاسبة</a></li>
                             <li><a class="slide-item" href="{{ url('/' . $page='manager') }}">طلبات الادارة المالية</a></li>
                             <li><a class="slide-item" href="{{ url('/' . $page='manager/command') }}">طلبات امر اصدار دفعة</a></li>
+                            <li><a class="slide-item" href="{{ url('/' . $page='manager/receipt') }}">سندات الصرف</a></li>
                         </ul>
                     </li>
 					<li class="side-item side-item-category">الخزنة</li>

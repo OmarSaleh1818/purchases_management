@@ -49,7 +49,7 @@
                                 <th class="border-bottom-0">السادة</th>
                                 <th class="border-bottom-0">اسم المشروع</th>
                                 <th class="border-bottom-0">اسم المورد</th>
-                                <th class="border-bottom-0">الدفعة</th>
+                                <th class="border-bottom-0">مبلغ الدفعة</th>
                                 <th class="border-bottom-0">المبلغ كتابة</th>
                                 <th class="border-bottom-0">تاريخ الاستحقاق</th>
                                 <th class="border-bottom-0">البنك المسحوب عليه</th>
@@ -61,16 +61,15 @@
                             </thead>
                             <tbody>
                             @foreach($payment as $key => $item)
-                                @if($item->status_id == 7)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->project_name }}</td>
                                     <td>{{ $item->gentlemen }}</td>
-                                    <td>{{ $item->project_number }}</td>
+                                    <td>{{ $item->project_name }}</td>
                                     <td>{{ $item->supplier_name }}</td>
                                     <td>{{ $item->batch_payment }}</td>
                                     <td>{{ $item->price_name }}</td>
                                     <td>{{ $item->due_date }}</td>
+                                    <td>{{ $item->bank_name }}</td>
                                     <td>
                                         @if($item->status_id == 1)
                                             <a href="{{ route('print.payment', $item->id) }}" class="btn btn-secondary"
@@ -85,25 +84,21 @@
                                     </td>
                                     <td>
                                         @if($item->status_id == 5)
-                                            <a href="{{ route('account.eye', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
-                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-secondary"
-                                               title="edit data"><i class="las la-pen"></i></a>
+                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
+                                               title="edit data"><i class="las la-eye"></i></a>
                                         @elseif($item->status_id==6)
 
-                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-secondary"
-                                               title="edit data"><i class="las la-pen"></i></a>
+                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
+                                               title="edit data"><i class="las la-eye"></i></a>
                                         @elseif($item->status_id==7)
-                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-secondary"
-                                               title="edit data"><i class="las la-pen"></i></a>
+                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
+                                               title="edit data"><i class="las la-eye"></i></a>
                                         @elseif($item->status_id==3)
-                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-secondary"
-                                               title="edit data"><i class="las la-pen"></i></a>
+                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
+                                               title="edit data"><i class="las la-eye"></i></a>
                                         @else
-                                        <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-secondary"
-                                           title="edit data"><i class="las la-pen"></i></a>
-                                            <a href="{{ route('account.eye', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
+                                               title="edit data"><i class="las la-pen"></i></a>
                                         @endif
                                     </td>
                                     <td>
@@ -111,71 +106,16 @@
                                             <button class="btn btn-success">تم تاكيد الطلب</button>
 
                                         @elseif($item->status_id == 6)
-                                            <button class="btn btn-success">تم موافقة المالية</button>
+                                            <button class="btn btn-secondary">تم موافقة المالية</button>
                                         @elseif($item->status_id == 7)
+                                            <button class="btn btn-danger">تم اعتماد المدير</button>
+                                        @elseif($item->status_id == 1)
                                             <a href="{{ route('account.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>                                        @elseif($item->status_id == 3)
                                             <button class="btn btn-danger">تم الدفع</button>
                                         @endif
                                     </td>
                                     <td></td>
                                 </tr>
-                                @elseif($item->status_id == 5)
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td>{{ $item->project_name }}</td>
-                                        <td>{{ $item->gentlemen }}</td>
-                                        <td>{{ $item->project_number }}</td>
-                                        <td>{{ $item->supplier_name }}</td>
-                                        <td>{{ $item->batch_payment }}</td>
-                                        <td>{{ $item->price_name }}</td>
-                                        <td>{{ $item->due_date }}</td>
-                                        <td>
-                                            @if($item->status_id == 1)
-                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-secondary"
-                                                   title="طباعة"><i class="fa fa-print"></i></a>
-                                            @elseif($item->status_id == 2)
-                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-danger"
-                                                   title="طباعة"><i class="fa fa-print"></i></a>
-                                            @else
-                                                <a href="{{ route('print.manager.payment', $item->id) }}" class="btn btn-warning"
-                                                   title="طباعة"><i class="fa fa-print"></i></a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->status_id == 5)
-                                                <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
-                                                   title="edit data"><i class="las la-eye"></i></a>
-                                            @elseif($item->status_id==6)
-
-                                                <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
-                                                   title="edit data"><i class="las la-eye"></i></a>
-                                            @elseif($item->status_id==7)
-                                                <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
-                                                   title="edit data"><i class="las la-eye"></i></a>
-                                            @elseif($item->status_id==3)
-                                                <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-info"
-                                                   title="edit data"><i class="las la-eye"></i></a>
-                                            @else
-                                                <a href="{{ route('payment.edit', $item->id) }}" class="btn btn-secondary"
-                                                   title="edit data"><i class="las la-pen"></i></a>
-                                                <a href="{{ route('account.eye', $item->id) }}" class="btn btn-info"
-                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->status_id == 5)
-                                                <button class="btn btn-success">تم تاكيد الطلب</button>
-
-                                            @elseif($item->status_id == 6)
-                                                <button class="btn btn-secondary">تم موافقة المالية</button>
-                                            @elseif($item->status_id == 7)
-                                                <a href="{{ route('account.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>                                        @elseif($item->status_id == 3)
-                                                <button class="btn btn-danger">تم الدفع</button>
-                                            @endif
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                @endif
                             @endforeach
                             </tbody>
                         </table>

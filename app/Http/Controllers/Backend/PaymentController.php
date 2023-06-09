@@ -87,16 +87,37 @@ class PaymentController extends Controller
                 'description' => $request->description,
                 'created_at' => Carbon::now(),
             ]);
-            $multiIds = $request->input('payment');
-            $payment_price = $request->input('payment_price');
-            $payment_date = $request->input('payment_date');
-            foreach ($multiIds as $key => $multiId) {
-                $data = [
-                    'payment_price' => $payment_price[$key],
-                    'payment_date' => $payment_date[$key],
-                ];
-                MultiPayment::where('id', $multiId)->update($data);
+        $multiIds = $request->input('payment');
+        $payment_price = $request->input('payment_price');
+        $payment_date = $request->input('payment_date');
+
+// Remove deleted payment records
+        $existingPaymentIds = MultiPayment::pluck('id')->toArray();
+        $deletedPaymentIds = array_diff($existingPaymentIds, $multiIds);
+        MultiPayment::whereIn('id', $deletedPaymentIds)->delete();
+
+// Update existing payment records and create new ones
+        foreach ($multiIds as $key => $multiId) {
+            $data = [
+                'payment_price' => $payment_price[$key],
+                'payment_date' => $payment_date[$key],
+            ];
+
+            if ($data['payment_price'] !== null && $data['payment_date'] !== null) {
+                if ($multiId != '') {
+                    MultiPayment::where('id', $multiId)->update($data);
+                } else {
+                    // Retrieve the corresponding payment record
+                    $payment = PurchaseOrder::find($id);
+                    if ($payment) {
+                        // Add the following line to set the payment_id for new records
+                        $data['payment_id'] = $payment->id;
+
+                        MultiPayment::create($data);
+                    }
+                }
             }
+        }
 
         $multiIds = $request->input('multi');
         $purchaseNames = $request->input('purchase_name');
@@ -248,25 +269,20 @@ class PaymentController extends Controller
     }
 
     public function PartialPaymentStore(Request $request) {
-
-        // Set cURL options
+        $purchase_id = $request->input('id');
+        $id = $request->input('purchase_id');
         $multiPayment = $request->input('multi_payment');
+        $existingBatches = PartialPayment::where('number_order', $request->order_purchase_id)->pluck('batch_payment')->toArray();
 
         foreach ($multiPayment as $key => $payment) {
-            // Check if the "paid" key exists and its value is equal to 1
             if (isset($payment['paid_payment'])) {
                 $paymentPrice = $payment['paid_payment']['payment_price'];
                 $paymentDate = $payment['paid_payment']['payment_date'];
-                // Replace `YourModel` with the actual name of your model
-                // Check if a matching record already exists
-                $recordExists = PartialPayment::where('batch_payment', $paymentPrice)
-                    ->exists();
-                if ($recordExists) {
 
-                } else {
-                    $company_name = $request->compan_name;
-                    $purchase_id = $request->id;
-                    $id = $request->purchase_id;
+                if (in_array($paymentPrice, $existingBatches)) {
+                    $request->session()->flash('status', 'تم بالفعل إدخال هذه الدفعة: ' . $paymentPrice);
+                    continue; // Skip further processing for duplicate batch payment
+                }
                     // If no matching record, proceed with insertion
                     // Insert total payment into another table
                     // Assuming you have a model named TotalPayment and a corresponding table named total_payments
@@ -320,7 +336,7 @@ class PaymentController extends Controller
                     PartialPayment::insert([
                         'number_order' =>  $request->order_purchase_id,
                         'date' => $request->date,
-                        'company_name' => $company_name,
+                        'company_name' => $request->company_name,
                         'project_name' => $request->project_name,
                         'project_number' => $request->project_number,
                         'order_purchase_id' => $request->order_purchase_id,
@@ -337,19 +353,11 @@ class PaymentController extends Controller
                         'description' => $request->description,
                         'created_at' => Carbon::now(),
                     ]);
-                    DB::table('purchases')
-                        ->where('id', $id)
-                        ->update(['status_id' => 4]);
-
-                    DB::table('purchase_orders')
-                        ->where('id', $purchase_id)
-                        ->update(['status_id' => 4]);
-                }
+                $existingBatches[] = $paymentPrice;
             }
         }
-            $request->session()->flash('status', 'تم ارسال طلب الدفعة بنجاح');
+            $request->session()->flash('status', 'تم إرسال طلب الدفعة بنجاح');
             return redirect('/payment');
-
     }
 
     public function BatchPayment($id) {

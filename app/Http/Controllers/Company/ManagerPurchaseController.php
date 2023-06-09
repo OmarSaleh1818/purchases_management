@@ -80,16 +80,38 @@ class ManagerPurchaseController extends Controller
                 'description' => $request->description,
                 'created_at' => Carbon::now(),
             ]);
-            $multiIds = $request->input('payment');
-            $payment_price = $request->input('payment_price');
-            $payment_date = $request->input('payment_date');
-            foreach ($multiIds as $key => $multiId) {
-                $data = [
-                    'payment_price' => $payment_price[$key],
-                    'payment_date' => $payment_date[$key],
-                ];
-                MultiPayment::where('id', $multiId)->update($data);
+        $multiIds = $request->input('payment');
+        $payment_price = $request->input('payment_price');
+        $payment_date = $request->input('payment_date');
+
+// Remove deleted payment records
+        $existingPaymentIds = MultiPayment::pluck('id')->toArray();
+        $deletedPaymentIds = array_diff($existingPaymentIds, $multiIds);
+        MultiPayment::whereIn('id', $deletedPaymentIds)->delete();
+
+// Update existing payment records and create new ones
+        foreach ($multiIds as $key => $multiId) {
+            $data = [
+                'payment_price' => $payment_price[$key],
+                'payment_date' => $payment_date[$key],
+            ];
+
+            if ($data['payment_price'] !== null && $data['payment_date'] !== null) {
+                if ($multiId != '') {
+                    MultiPayment::where('id', $multiId)->update($data);
+                } else {
+                    // Retrieve the corresponding payment record
+                    $payment = PurchaseOrder::find($id);
+                    if ($payment) {
+                        // Add the following line to set the payment_id for new records
+                        $data['payment_id'] = $payment->id;
+
+                        MultiPayment::create($data);
+                    }
+                }
             }
+        }
+
         $multiIds = $request->input('multi');
         $purchaseNames = $request->input('purchase_name');
         $quantities = $request->input('quantity');
@@ -109,7 +131,7 @@ class ManagerPurchaseController extends Controller
             MultiPurchaseOrder::where('id', $multiId)->update($data);
         }
 
-        $request->session()->flash('status', 'تم تعديل طلب شراء بنجاح');
+        $request->session()->flash('status', 'تم حفظ طلب شراء بنجاح');
         return redirect('/manager/purchase');
     }
 

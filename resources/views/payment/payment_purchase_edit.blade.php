@@ -18,7 +18,7 @@
 @section('content')
     <!-- row -->
 
-    <form method="post" action="{{ route('payment.purchase.update', $purchases->id) }}">
+    <form id="paymentForm" method="post" action="{{ route('payment.purchase.update', $purchases->id) }}">
         @csrf
 
         <input type="hidden" name="id" value=" {{ $purchases->id }} ">
@@ -280,19 +280,24 @@
                 <div class="form-group">
                     <label for="">شروط السداد</label> <span style="color: red;">  *</span><br>
                     <div id="paymentRows">
-                        @foreach($multi_payment as $payment)
-                            <div class="paymentRow">
-                                <input type="hidden" name="payment[]" value="{{$payment->id }}">
+                        @if(count($multi_payment) > 0)
+                            @foreach($multi_payment as $key => $payment)
                                 <div class="paymentRow">
-                                    <label for="batch1">الدفعة 1 :</label>
-                                    <input type="text" class="priceInput form-control" name="payment_price[]" id="batch1" value="{{ $payment->payment_price }}">
-                                    <label for="date1">Date:</label>
-                                    <input type="date" class="dateInput form-control" name="payment_date[]" id="date1" value="{{ $payment->payment_date }}">
+                                    <input type="hidden" name="payment[]" value="{{$payment->id }}">
+                                    <input type="hidden" name="payment_id[]" value="{{$payment->payment_id }}">
+                                    <div class="paymentContent">
+                                        <label for="batch{{$key + 1}}">الدفعة {{$key + 1}}:</label>
+                                        <input type="text" class="priceInput form-control" name="payment_price[]" id="batch{{$key + 1}}" value="{{ $payment->payment_price }}">
+                                        <label for="date{{$key + 1}}">التاريخ المستحق للدفعة:</label>
+                                        <input type="date" class="dateInput form-control" name="payment_date[]"
+                                               min="{{ Carbon\Carbon::now()->format('Y-m-d') }}" id="date{{$key + 1}}" value="{{ $payment->payment_date }}">
+                                        <button type="button" class="btn btn-danger removeButton">حذف</button>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                        <button type="button" class="btn btn-primary" id="addRowButton">اضافة دفعة</button>
+                            @endforeach
+                        @endif
                     </div>
+                    <button type="button" class="btn btn-primary" id="addRowButton">اضافة دفعة</button>
                 </div>
             </div>
             <div class="col-md-6">
@@ -352,43 +357,61 @@
             // Create new row elements
             const row = document.createElement("div");
             row.className = "paymentRow";
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "payment[]";
+            hiddenInput.value = "";
+            row.appendChild(hiddenInput);
+
+            const paymentContent = document.createElement("div");
+            paymentContent.className = "paymentContent";
+
             const batchLabel = document.createElement("label");
-            batchLabel.textContent = `الدفعة ${rowCount + 0}:`;
-            row.appendChild(batchLabel);
+            batchLabel.textContent = `الدفعة ${rowCount + 1}:`;
+            paymentContent.appendChild(batchLabel);
 
             const batchInput = document.createElement("input");
             batchInput.type = "text";
             batchInput.name = "payment_price[]";
             batchInput.className = "priceInput form-control";
             batchInput.required = true;
-            row.appendChild(batchInput);
+            paymentContent.appendChild(batchInput);
 
             const dateLabel = document.createElement("label");
-            dateLabel.textContent = "التاريخ المستحق للدفعة :";
-            row.appendChild(dateLabel);
+            dateLabel.textContent = "التاريخ المستحق للدفعة:";
+            paymentContent.appendChild(dateLabel);
 
             const dateInput = document.createElement("input");
             dateInput.type = "date";
             dateInput.name = "payment_date[]";
             dateInput.className = "dateInput form-control";
             dateInput.required = true;
-            row.appendChild(dateInput);
+            dateInput.min = "{{ Carbon\Carbon::now()->format('Y-m-d') }}";
+            paymentContent.appendChild(dateInput);
 
-            // Create remove button
             const removeButton = document.createElement("button");
             removeButton.type = "button";
             removeButton.textContent = "حذف";
-            removeButton.className = "btn btn-danger";
+            removeButton.className = "btn btn-danger removeButton";
             removeButton.addEventListener("click", removePaymentRow);
-            row.appendChild(removeButton);
+            paymentContent.appendChild(removeButton);
+
+            row.appendChild(paymentContent);
 
             // Append the new row to the paymentRows container
             paymentRows.appendChild(row);
         }
+
         // Function to remove a payment row
         function removePaymentRow(event) {
-            const row = event.target.parentNode;
+            const row = event.target.closest(".paymentRow");
             row.remove();
+        }
+
+        // Attach event listener to existing remove buttons
+        const removeButtons = document.getElementsByClassName("removeButton");
+        for (let i = 0; i < removeButtons.length; i++) {
+            removeButtons[i].addEventListener("click", removePaymentRow);
         }
 
         // Function to validate the form submission
@@ -405,13 +428,12 @@
             // Check if totalPayments exceed the totalPrice
             if (totalPayments > totalPrice) {
                 event.preventDefault();
-                alert("لا يمكن أن يتجاوز إجمالي الدفعات السعر الإجمالي!!");
+                alert("لا يمكن أن يتجاوز إجمالي الدفعات السعر الإجمالي بعد الضريبة!!");
             } else if (totalPayments < totalPrice) {
                 event.preventDefault();
-                alert("إجمالي الدفعات يجب أن يكون على الأقل سعر الإجمالي!!");
+                alert("إجمالي الدفعات يجب أن يكون على الأقل سعر الإجمالي بعد الضريبة !!");
             }
         }
-
     </script>
     <script>
         $(document).on('input', '#quantity', function(res,e) {

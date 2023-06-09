@@ -106,6 +106,13 @@ Route::post('/receipt/command/store', [CatchReceiptController::class, 'ReceiptCo
 
 // All Catch Receipt Route
 Route::get('catch/receipt', [CatchReceiptController::class, 'CatchReceipt']);
+Route::get('/print/receipt/{id}', [CatchReceiptController::class, 'PrintReceipt'])->name('print.receipt');
+Route::get('/account/receipt', [CatchReceiptController::class, 'AccountReceipt']);
+Route::get('/account/receipt/edit/{id}', [CatchReceiptController::class, 'AccountReceiptEdit'])
+    ->name('account.receipt.edit');
+Route::post('/account/receipt/update/{id}', [CatchReceiptController::class, 'AccountReceiptUpdate'])
+    ->name('account.receipt.update');
+Route::get('/sure/account/receipt/{id}', [CatchReceiptController::class, 'SureAccountSure'])->name('sure.account.receipt');
 
 // End Catch Receipt Route
 
@@ -126,6 +133,12 @@ Route::get('/finance/edit/{id}', [AccountantController::class, 'FinanceEdit'])->
 Route::post('/finance/update/{id}', [AccountantController::class, 'FinanceUpdate'])->name('finance.update');
 Route::get('/finance/eye/{id}', [AccountantController::class, 'FinanceEye'])->name('finance.eye');
 Route::post('/finance/eye/update', [AccountantController::class, 'FinanceEyeUpdate'])->name('financeye.update');
+Route::get('/finance/receipt', [CatchReceiptController::class, 'FinanceReceipt']);
+Route::get('/finance/receipt/edit/{id}', [CatchReceiptController::class, 'FinanceReceiptEdit'])
+    ->name('finance.receipt.edit');
+Route::post('/finance/receipt/update/{id}', [CatchReceiptController::class, 'FinanceReceiptUpdate'])
+    ->name('finance.receipt.update');
+Route::get('/sure/finance/receipt/{id}', [CatchReceiptController::class, 'FinanceAccountSure'])->name('sure.finance.receipt');
 
 Route::get('finance/command', [AccountantController::class, 'FinanceCommandView']);
 Route::get('/command/sure/{id}', [AccountantController::class, 'FinanceCommandSure'])->name('command.sure');
@@ -139,6 +152,12 @@ Route::get('manager', [ManagerController::class, 'ManagerView']);
 Route::get('/manager/edit/{id}', [ManagerController::class, 'ManagerEdit'])->name('manager.edit');
 Route::post('/manager/update/{id}', [ManagerController::class, 'ManagerUpdate'])->name('manager.update');
 Route::get('/manager/sure/{id}', [ManagerController::class, 'ManagerSure'])->name('manager.sure');
+Route::get('/manager/receipt', [ManagerController::class, 'ManagerReceipt']);
+Route::get('/manager/receipt/edit/{id}', [ManagerController::class, 'ManagerReceiptEdit'])
+    ->name('manager.receipt.edit');
+Route::post('/manager/receipt/update/{id}', [ManagerController::class, 'ManagerReceiptUpdate'])
+    ->name('manager.receipt.update');
+Route::get('/sure/manager/receipt/{id}', [ManagerController::class, 'ManagerReceiptSure'])->name('sure.manager.receipt');
 
 Route::get('manager/command', [ManagerController::class, 'ManagerCommandView']);
 Route::get('manager/command/edit/{id}', [ManagerController::class, 'ManagerCommandEdit'])->name('manager.command.edit');

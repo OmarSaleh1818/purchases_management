@@ -61,68 +61,196 @@
                             </thead>
                             <tbody>
                             @foreach($partials as $key => $item)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->gentlemen }}</td>
-                                    <td>{{ $item->project_name }}</td>
-                                    <td>{{ $item->supplier_name }}</td>
-                                    <td>{{ $item->batch_payment }}</td>
-                                    <td>{{ $item->price_name }}</td>
-                                    <td>{{ $item->due_date }}</td>
-                                    <td>{{ $item->bank_name }}</td>
-                                    <td>
-                                        @if($item->status_id == 1)
-                                            <a href="{{ route('print.payment', $item->id) }}" class="btn btn-secondary"
-                                               title="طباعة"><i class="fa fa-print"></i></a>
-                                        @elseif($item->status_id == 2)
-                                            <a href="{{ route('print.payment', $item->id) }}" class="btn btn-danger"
-                                               title="طباعة"><i class="fa fa-print"></i></a>
-                                        @else
-                                            <a href="{{ route('print.manager.payment', $item->id) }}" class="btn btn-warning"
-                                               title="طباعة"><i class="fa fa-print"></i></a>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item->status_id == 5)
-                                            <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
-                                            <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
-                                               title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
-                                        @elseif($item->status_id==6)
+                                @if($item->status_id == 6)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $item->project_name }}</td>
+                                        <td>{{ $item->gentlemen }}</td>
+                                        <td>{{ $item->project_number }}</td>
+                                        <td>{{ $item->supplier_name }}</td>
+                                        <td>{{ $item->batch_payment }}</td>
+                                        <td>{{ $item->price_name }}</td>
+                                        <td>{{ $item->due_date }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-secondary"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-danger"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.payment', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 5)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                                <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
+                                                   title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
+                                            @elseif($item->status_id==6)
 
-                                            <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
-                                        @elseif($item->status_id==7)
-                                            <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
-                                        @elseif($item->status_id==3)
-                                            <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
-                                        @else
-                                            <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
-                                               title="edit data"><i class="las la-pen"></i></a>
-                                            <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
-                                               title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item->status_id == 5)
-                                            <button class="btn btn-success">تم تاكيد الطلب</button>
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @elseif($item->status_id==7)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @elseif($item->status_id==3)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @else
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="edit data"><i class="las la-pen"></i></a>
+                                                <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
+                                                   title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 5)
+                                                <button class="btn btn-success">تم تاكيد الطلب</button>
 
-                                        @elseif($item->status_id == 6)
-                                            <button class="btn btn-success">تم موافقة المالية</button>
-                                        @elseif($item->status_id == 7)
-                                            <button class="btn btn-success">تم تاكيد الطلب</button>
-                                        @elseif($item->status_id == 3)
-                                            <button class="btn btn-danger">تم الدفع</button>
-                                        @elseif($item->status_id == 2)
-                                            <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-warning">تم رفض الطلب</a>
-                                        @else
-                                            <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>
-                                        @endif
-                                    </td>
-                                    <td></td>
-                                </tr>
+                                            @elseif($item->status_id == 6)
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>
+                                            @elseif($item->status_id == 7)
+                                                <button class="btn btn-success">تم تاكيد الطلب</button>
+                                            @elseif($item->status_id == 3)
+                                                <button class="btn btn-danger">تم الدفع</button>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-warning">تم رفض الطلب</a>
+                                            @else
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>
+                                            @endif
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                @elseif($item->status_id == 7)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $item->project_name }}</td>
+                                        <td>{{ $item->gentlemen }}</td>
+                                        <td>{{ $item->project_number }}</td>
+                                        <td>{{ $item->supplier_name }}</td>
+                                        <td>{{ $item->batch_payment }}</td>
+                                        <td>{{ $item->price_name }}</td>
+                                        <td>{{ $item->due_date }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-secondary"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-danger"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.payment', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 5)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                                <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
+                                                   title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
+                                            @elseif($item->status_id==6)
+
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @elseif($item->status_id==7)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @elseif($item->status_id==3)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @else
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="edit data"><i class="las la-pen"></i></a>
+                                                <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
+                                                   title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 5)
+                                                <button class="btn btn-success">تم تاكيد الطلب</button>
+
+                                            @elseif($item->status_id == 6)
+                                                <button class="btn btn-success">تم موافقة المالية</button>
+                                            @elseif($item->status_id == 7)
+                                                <button class="btn btn-success">تم الاعتماد</button>
+                                            @elseif($item->status_id == 3)
+                                                <button class="btn btn-danger">تم الدفع</button>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-warning">تم رفض الطلب</a>
+                                            @else
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>
+                                            @endif
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                @elseif($item->status_id == 3)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $item->project_name }}</td>
+                                        <td>{{ $item->gentlemen }}</td>
+                                        <td>{{ $item->project_number }}</td>
+                                        <td>{{ $item->supplier_name }}</td>
+                                        <td>{{ $item->batch_payment }}</td>
+                                        <td>{{ $item->price_name }}</td>
+                                        <td>{{ $item->due_date }}</td>
+                                        <td>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-secondary"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('print.payment', $item->id) }}" class="btn btn-danger"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.manager.payment', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 5)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                                <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
+                                                   title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
+                                            @elseif($item->status_id==6)
+
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @elseif($item->status_id==7)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @elseif($item->status_id==3)
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            @else
+                                                <a href="{{ route('manager.payment.edit', $item->id) }}" class="btn btn-info"
+                                                   title="edit data"><i class="las la-pen"></i></a>
+                                                <a href="{{ route('manager.payment.reject', $item->id) }}" class="btn btn-danger"
+                                                   title="رفض الطلب" id="delete"><i class="fa fa-trash"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 5)
+                                                <button class="btn btn-success">تم تاكيد الطلب</button>
+
+                                            @elseif($item->status_id == 6)
+                                                <button class="btn btn-success">تم موافقة المالية</button>
+                                            @elseif($item->status_id == 7)
+                                                <button class="btn btn-success">تم الاعتماد</button>
+                                            @elseif($item->status_id == 3)
+                                                <button class="btn btn-danger">تم الدفع</button>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-warning">تم رفض الطلب</a>
+                                            @else
+                                                <a href="{{ route('manager.payment.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>
+                                            @endif
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>

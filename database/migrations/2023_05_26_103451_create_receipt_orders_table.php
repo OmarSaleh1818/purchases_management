@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('payment_id');
             $table->date('date');
-            $table->integer('number_receipt');
             $table->string('benefit');
             $table->integer('price');
             $table->string('currency_type');

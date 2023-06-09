@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    الادارة المالية
+    سند صرف
 @endsection
 @section('css')
     <!-- Internal Data table css -->
@@ -16,7 +16,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">الادارة المالية</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ طلب اصدار دفعة</span>
+                <h4 class="content-title mb-0 my-auto">المدير العام</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ سندات الصرف</span>
             </div>
         </div>
 
@@ -45,94 +45,92 @@
                         <table id="example" class="table key-buttons text-md-nowrap">
                             <thead>
                             <tr>
+                            <tr>
                                 <th class="border-bottom-0">ID</th>
-                                <th class="border-bottom-0">اسم المشروع</th>
-                                <th class="border-bottom-0">السادة</th>
-                                <th class="border-bottom-0">الرقم</th>
+                                <th class="border-bottom-0">المستفيد</th>
+                                <th class="border-bottom-0">المبلغ</th>
+                                <th class="border-bottom-0">البنك المسحوب عليه</th>
+                                <th class="border-bottom-0">المشروع</th>
+                                <th class="border-bottom-0">المخصص المالي</th>
                                 <th class="border-bottom-0">البيان</th>
-                                <th class="border-bottom-0">اسم المورد</th>
-                                <th class="border-bottom-0">مبلغ الدفعة</th>
-                                <th class="border-bottom-0">التاريخ المستحق للدفعة</th>
-                                <th class="border-bottom-0">عرض الطلب</th>
+                                <th class="border-bottom-0">طباعة</th>
+                                <th class="border-bottom-0">التعديل</th>
                                 <th class="border-bottom-0">حالة الطلب</th>
                                 <th class="border-bottom-0"></th>
                             </tr>
+                            </tr>
                             </thead>
                             <tbody>
-                            @foreach($payments as $key => $item)
-                                @if($item->status_id == 5)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->project_name }}</td>
-                                    <td>{{ $item->gentlemen }}</td>
-                                    <td>{{ $item->project_number }}</td>
-                                    <td>{{ $item->purchase_name }}</td>
-                                    <td>{{ $item->supplier_name }}</td>
-                                    <td>{{ $item->batch_payment }}</td>
-                                    <td>{{ $item->due_date }}</td>
-                                    <td>
-                                        <a href="{{ route('finance.edit', $item->id) }}" class="btn btn-info"
-                                           title="تعديل الطلب "><i class="las la-pen"></i></a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('finance.sure', $item->id) }}" class="btn btn-primary">تاكيد الطلب</a>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                @elseif($item->status_id == 6)
+                            @foreach($receipt as $key => $item)
+                                @if($item->status_id == 6)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
+                                        <td>{{ $item->benefit }}</td>
+                                        <td>{{ $item->price }}</td>
+                                        <td>{{ $item->bank_name }}</td>
                                         <td>{{ $item->project_name }}</td>
-                                        <td>{{ $item->gentlemen }}</td>
-                                        <td>{{ $item->project_number }}</td>
+                                        <td>{{ $item->financial_provision }}</td>
                                         <td>{{ $item->purchase_name }}</td>
-                                        <td>{{ $item->supplier_name }}</td>
-                                        <td>{{ $item->batch_payment }}</td>
-                                        <td>{{ $item->due_date }}</td>
                                         <td>
-                                            <a href="{{ route('finance.edit', $item->id) }}" class="btn btn-info"
-                                               title="تعديل الطلب "><i class="las la-pen"></i></a>
+                                            @if($item->status_id == 1)
+                                                <a href="{{ route('print.receipt', $item->id) }}" class="btn btn-secondary"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('print.receipt', $item->id) }}" class="btn btn-danger"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.receipt', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
                                         </td>
                                         <td>
-                                            <button class="btn btn-success">تم تاكيد الطلب</button>
+                                            <a href="{{ route('manager.receipt.edit', $item->id) }}" class="btn btn-info"
+                                               title="تعديل الطلب"><i class="las la-pen"></i></a>
+                                        </td>
+                                        <td>
+                                            @if($item->status_id == 6)
+                                                <a href="{{ route('sure.manager.receipt', $item->id) }}" class="btn btn-primary">تأكيد الطلب</a>
+                                            @elseif($item->status_id == 7)
+                                                <button class="btn btn-danger">تم الاعتماد</button>
+                                            @endif
                                         </td>
                                         <td></td>
                                     </tr>
                                 @elseif($item->status_id == 7)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
+                                        <td>{{ $item->benefit }}</td>
+                                        <td>{{ $item->price }}</td>
+                                        <td>{{ $item->bank_name }}</td>
                                         <td>{{ $item->project_name }}</td>
-                                        <td>{{ $item->gentlemen }}</td>
-                                        <td>{{ $item->project_number }}</td>
+                                        <td>{{ $item->financial_provision }}</td>
                                         <td>{{ $item->purchase_name }}</td>
-                                        <td>{{ $item->supplier_name }}</td>
-                                        <td>{{ $item->batch_payment }}</td>
-                                        <td>{{ $item->due_date }}</td>
                                         <td>
-                                            <a href="{{ route('finance.edit', $item->id) }}" class="btn btn-info"
-                                               title="تعديل الطلب "><i class="las la-pen"></i></a>
+                                            @if($item->status_id == 7)
+                                                <a href="{{ route('print.receipt', $item->id) }}" class="btn btn-danger"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @elseif($item->status_id == 2)
+                                                <a href="{{ route('print.receipt', $item->id) }}" class="btn btn-danger"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @else
+                                                <a href="{{ route('print.receipt', $item->id) }}" class="btn btn-warning"
+                                                   title="طباعة"><i class="fa fa-print"></i></a>
+                                            @endif
                                         </td>
                                         <td>
-                                            <button class="btn btn-danger">تم موافقة المدير</button>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                @elseif($item->status_id == 3)
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td>{{ $item->project_name }}</td>
-                                        <td>{{ $item->gentlemen }}</td>
-                                        <td>{{ $item->project_number }}</td>
-                                        <td>{{ $item->purchase_name }}</td>
-                                        <td>{{ $item->supplier_name }}</td>
-                                        <td>{{ $item->batch_payment }}</td>
-                                        <td>{{ $item->due_date }}</td>
-                                        <td>
-                                            <a href="{{ route('finance.eye', $item->id) }}" class="btn btn-info"
-                                               title="عرض الطلب "><i class="las la-eye"></i></a>
+                                            <a href="{{ route('finance.receipt.edit', $item->id) }}" class="btn btn-info"
+                                               title="تعديل الطلب"><i class="las la-pen"></i></a>
                                         </td>
                                         <td>
-                                            <button class="btn btn-danger">تم الدفع</button>
+                                            @if($item->status_id == 1)
+
+                                            @elseif($item->status_id == 5)
+                                                <a href="{{ route('sure.finance.receipt', $item->id) }}" class="btn btn-primary">تأكيد الطلب</a>
+                                            @elseif($item->status_id == 6)
+                                                <button class="btn btn-secondary">تم تاكيد الطلب</button>
+                                            @elseif($item->status_id == 7)
+                                                <button class="btn btn-danger">تم الاعتماد</button>
+                                            @endif
                                         </td>
                                         <td></td>
                                     </tr>
@@ -146,6 +144,7 @@
         </div>
         <!--/div-->
     </div>
+
     <!-- row closed -->
     </div>
     <!-- Container closed -->

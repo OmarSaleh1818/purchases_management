@@ -48,7 +48,6 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $purchase_id = $request->id;
-        $company_name = $request->company_name;
         $request->validate([
             'gentlemen' => 'required',
             'professor_care' => 'required',
@@ -75,7 +74,7 @@ class PurchaseOrderController extends Controller
             'delivery_date.required' => 'تاريخ التسليم مطلوب',
         ]);
             $purchaseOrder_id = PurchaseOrder::insertGetId([
-                'company_name' => $company_name,
+                'company_name' => $request->company_name,
                 'gentlemen' => $request->gentlemen,
                 'professor_care' => $request->professor_care,
                 'order_purchase_number' => $request->order_material_id,
@@ -138,7 +137,7 @@ class PurchaseOrderController extends Controller
             ->where('id', $purchase_id)
             ->update(['status_id' => 3]);
 
-        $request->session()->flash('status', 'تم اضافة طلب شراء بنجاح');
+        $request->session()->flash('status', 'تم ارسال طلب شراء بنجاح');
         return redirect('/purchase/order');
     }
 
@@ -197,7 +196,7 @@ class PurchaseOrderController extends Controller
             multiPurchase::where('id', $multiId)->update($data);
         }
 
-        $request->session()->flash('status', 'تم تعديل طلب مواد بنجاح');
+        $request->session()->flash('status', 'تم حفظ طلب مواد بنجاح');
         return redirect('/purchase/order');
     }
 

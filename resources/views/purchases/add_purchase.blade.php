@@ -22,12 +22,12 @@
         @csrf
 
         <input type="hidden" name="id" value=" {{ $purchase->id }} ">
-        <input type="hidden" name="company_name" value="{{ $purchase['company']['company_name'] }}">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label>السادة</label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="gentlemen" required placeholder="اسم السادة...">
+                    <input type="hidden" name="company_name" value="{{ $purchase['company']['company_name'] }}">
                     @error('gentlemen')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
@@ -75,7 +75,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>رقم المشروع</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="project_number" value="{{ $purchase->subsubcompany_id }}" readonly>
+                    <input type="text" class="form-control" name="project_number" value="{{ $purchase->id }}" readonly>
                     @error('project_number')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
@@ -282,7 +282,8 @@
                             <label for="batch1">الدفعة 1 :</label>
                             <input type="text" class="priceInput form-control" name="payment_price[]" id="batch1" required>
                             <label for="date1">التاريخ المستحق للدفعة :</label>
-                            <input type="date" class="dateInput form-control" name="payment_date[]" id="date1" required>
+                            <input type="date" class="dateInput form-control" name="payment_date[]"
+                                   min="{{ Carbon\Carbon::now()->format('Y-m-d') }}" id="date1" required>
                         </div>
                         <button type="button" class="btn btn-primary" id="addRowButton">اضافة دفعة</button>
                     </div>
@@ -291,7 +292,9 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>تاريخ التسليم</label><span style="color: red;">  *</span>
-                    <input type="date" class="form-control" name="delivery_date" id="dateInput1" placeholder="تاريخ التسليم...">
+                    <input type="date" class="form-control" name="delivery_date"
+                           min="{{ Carbon\Carbon::now()->format('Y-m-d') }}" id="dateInput1"
+                           placeholder="تاريخ التسليم...">
                     @error('delivery_date')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
@@ -397,10 +400,10 @@
             // Check if totalPayments exceed the totalPrice
             if (totalPayments > totalPrice) {
                 event.preventDefault();
-                alert("لا يمكن أن يتجاوز إجمالي الدفعات السعر الإجمالي!!");
+                alert("لا يمكن أن يتجاوز إجمالي الدفعات السعر الإجمالي بعد الضريبة!!");
             } else if (totalPayments < totalPrice) {
                 event.preventDefault();
-                alert("إجمالي الدفعات يجب أن يكون على الأقل سعر الإجمالي!!");
+                alert("إجمالي الدفعات يجب أن يكون على الأقل سعر الإجمالي بعد الضريبة !!");
             }
         }
 

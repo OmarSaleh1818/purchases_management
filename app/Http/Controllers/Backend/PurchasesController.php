@@ -166,7 +166,7 @@ class PurchasesController extends Controller
             multiPurchase::where('id', $multiId)->update($data);
         }
 
-        $request->session()->flash('status', 'تم تعديل طلب مواد بنجاح');
+        $request->session()->flash('status', 'تم حفظ طلب مواد بنجاح');
         return redirect('/purchases');
 
     }

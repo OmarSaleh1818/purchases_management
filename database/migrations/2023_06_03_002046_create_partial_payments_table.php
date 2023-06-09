@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('gentlemen');
             $table->string('supplier_name');
             $table->decimal('price');
+            $table->decimal('batch_payment');
             $table->string('price_name');
             $table->date('due_date');
             $table->string('purchase_name');

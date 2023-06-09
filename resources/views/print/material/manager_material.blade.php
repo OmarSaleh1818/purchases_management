@@ -42,11 +42,14 @@
                                 <h5 class="invoice-info"><span>التاريخ :</span>
                                     <span>{{ $purchases->date }}</span></h5>
                                 <br>
+                                <br>
                                 <h5 class="invoice-info"><span> الاستاذ :</span>
                                     <span>{{ $purchases->teacher_name }}</span></h5>
                                 <br>
+                                <br>
                                 <h5 class="invoice-info"><span>المشروع :</span>
                                     <span>{{ $purchases['subsubcompany']['subsubcompany_name'] }}</span></h5>
+                                <br>
                                 <br>
                                 <h5 class="invoice-info"><span>المخصص المالي :</span>
                                     <span>{{ $purchases->financial_provision }}</span></h5>
@@ -60,8 +63,10 @@
                                 <br>
                                 <br>
                                 <br>
+                                <br>
                                 <h5 class="invoice-info"><span>رقم المشروع :</span>
                                     <span>{{ $purchases->id }}</span></h5>
+                                <br>
                                 <br>
                                 <h5 class="invoice-info"><span>رقم المخصص المالي : </span>
                                     <span>{{ $purchases->number }}</span></h5>
@@ -73,10 +78,10 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>البيان</th>
-                                    <th>الكمية</th>
-                                    <th>الوحدة</th>
-                                    <th>رقم الموديل</th>
+                                    <th><h6>البيان</h6></th>
+                                    <th><h6>الكمية</h6></th>
+                                    <th><h6>الوحدة</h6></th>
+                                    <th><h6>رقم الموديل</h6></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -100,8 +105,10 @@
                                 <h5 class="invoice-info"><span>مقدم الطلب :</span>
                                     <span>{{ $purchases->applicant }}</span></h5>
                                 <br>
+                                <br>
                                 <h5 class="invoice-info"><span>اعتماد الادارة : </span>
                                     <span>تم الاعتماد</span></h5>
+                                <br>
                             </div>
                             <div class="col-md">
                                 <h5 class="invoice-info"><span>التوقيع :</span>
@@ -109,7 +116,9 @@
                             </div>
                         </div>
                         <br>
-                        <h5><strong class="invoice-info"><span>استلمت البضاعة كاملة و هي مطابقة للمواصفات المطلوبة</span></strong></h5>
+                        <strong class="invoice-info"><span>استلمت البضاعة كاملة و هي مطابقة للمواصفات المطلوبة</span></strong>
+                        <br>
+                        <br>
                         <br>
                         <div class="row mg-t-20">
                             <div class="col-md">
@@ -122,6 +131,9 @@
                                     <span></span></h5>
                             </div>
                         </div>
+
+
+
 
                         <button class="btn btn-danger  float-left mt-3 mr-2" id="print_Button" onclick="printDiv()"> <i
                                 class="mdi mdi-printer ml-1"></i>طباعة</button>

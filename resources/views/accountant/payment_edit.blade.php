@@ -84,7 +84,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>الدفعة </label><span style="color: red;">  *</span>
+                    <label> مبلغ الدفعة </label><span style="color: red;">  *</span>
                     <input type="text" class="form-control" name="batch_payment" value="{{ $payment->batch_payment }}">
                     @error('price')
                     <span class="text-danger"> {{ $message }}</span>
