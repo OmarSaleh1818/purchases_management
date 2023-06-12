@@ -32,11 +32,19 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>الرقم</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="payment_number" value="{{$paymentOrder->payment_number}}" readonly>
-                    @error('payment_number')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
+                    <h5>اختيار اسم الشركة <span class="text-danger">*</span></h5>
+                    <div class="controls">
+                        <select name="company_id" class="form-control">
+                            <option value="" selected="" disabled="">اختيار اسم الشركة</option>
+                            @foreach($companies as $company)
+                                <option value="{{ $company->id }}" {{ $company->id == $paymentOrder->company_id
+                                         ? 'selected' : ''}} readonly="">{{ $company->company_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('company_id')
+                        <span class="text-danger"> {{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>

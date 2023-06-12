@@ -34,7 +34,7 @@ return new class extends Migration
             $table->decimal('total_vat');
             $table->string('delivery_location');
             $table->date('delivery_date');
-            $table->string('terms_payment');
+            $table->integer('status_id')->default(1);
             $table->text('description')->nullable();
             $table->timestamps();
         });

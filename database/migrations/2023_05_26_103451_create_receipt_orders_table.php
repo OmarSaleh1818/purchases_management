@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('payment_id');
             $table->date('date');
             $table->string('benefit');
-            $table->integer('price');
+            $table->decimal('price');
             $table->string('currency_type');
             $table->string('just');
             $table->string('bank_name');
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('financial_provision');
             $table->integer('number');
             $table->string('purchase_name');
+            $table->integer('status_id')->default(1);
             $table->timestamps();
         });
     }

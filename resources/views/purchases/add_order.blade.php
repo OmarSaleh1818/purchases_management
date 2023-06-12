@@ -47,7 +47,9 @@
                         <div class="controls">
                             <select name="subcompany_id" class="form-control">
                                 <option value="" selected="" disabled="">اختيار اسم الفرع</option>
-
+                                @foreach($subcompanies as $subcompany)
+                                    <option value="{{ $subcompany->id }}">{{ $subcompany->subcompany_name }}</option>
+                                @endforeach
                             </select>
                             @error('subcompany_id')
                             <span class="text-danger"> {{ $message }}</span>
@@ -63,7 +65,10 @@
                         <div class="controls">
                             <select name="subsubcompany_id" class="form-control">
                                 <option value="" selected="" disabled="">اختيار اسم المشروع</option>
-
+                                @foreach($subsubcompanies as $subsub)
+                                    <option value="{{ $subsub->id }}">
+                                        {{ $subsub->subsubcompany_name }}</option>
+                                @endforeach
                             </select>
                             @error('subsubcompany_id')
                             <span class="text-danger"> {{ $message }}</span>

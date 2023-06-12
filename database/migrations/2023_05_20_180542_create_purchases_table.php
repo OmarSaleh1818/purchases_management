@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('applicant');
             $table->string('created_by')->nullable();
+            $table->integer('status_id')->default(1);
             $table->timestamps();
         });
     }

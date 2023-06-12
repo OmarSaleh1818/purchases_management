@@ -49,7 +49,6 @@ class PurchaseOrderController extends Controller
     {
         $purchase_id = $request->id;
         $request->validate([
-            'gentlemen' => 'required',
             'professor_care' => 'required',
             'order_purchase_date' => 'required',
             'price' => 'required',
@@ -58,10 +57,7 @@ class PurchaseOrderController extends Controller
             'total_discount' => 'required',
             'added_vat' => 'required',
             'total_vat' => 'required',
-            'delivery_location' => 'required',
-            'delivery_date' => 'required',
         ],[
-            'gentlemen.required' => 'اسم السادة مطلوب',
             'professor_care.required' => 'عناية الاستاذ  مطلوب',
             'order_purchase_date.required' => 'تاريخ طلب الشراء مطلوب',
             'price.required' => 'السعر مطلوب',
@@ -70,8 +66,6 @@ class PurchaseOrderController extends Controller
             'total_discount.required' => 'الاجمالي بعد الخصم مطلوب',
             'added_vat.required' => 'الضريبة المضافة مطلوب',
             'total_vat.required' => 'الاجمالي بعد الضريبة مطلوب',
-            'delivery_location.required' => 'موقع التسليم مطلوب',
-            'delivery_date.required' => 'تاريخ التسليم مطلوب',
         ]);
             $purchaseOrder_id = PurchaseOrder::insertGetId([
                 'company_name' => $request->company_name,
@@ -241,55 +235,28 @@ class PurchaseOrderController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'gentlemen' => 'required',
-            'professor_care' => 'required',
             'order_purchase_number' => 'required',
             'order_material_number' => 'required',
             'order_purchase_date' => 'required',
             'project_name' => 'required',
             'project_number' => 'required',
-            'email' => 'required',
-            'address' => 'required',
-            'phone_number' => 'required',
-            'subject' => 'required',
-            'sequencing' => 'required',
-            'purchase_name' => 'required',
-            'unit' => 'required',
-            'quantity' => 'required',
-            'price' => 'required',
             'total' => 'required',
             'discount' => 'required',
             'total_discount' => 'required',
             'added_vat' => 'required',
             'total_vat' => 'required',
-            'delivery_location' => 'required',
-            'delivery_date' => 'required',
-            'terms_payment' => 'required',
         ],[
-            'gentlemen.required' => 'اسم السادة مطلوب',
             'professor_care.required' => 'عناية الاستاذ  مطلوب',
             'order_purchase_number.required' => 'رقم طلب الشراء مطلوب',
             'order_material_number.required' => 'رقم طلب المواد مطلوب',
             'order_purchase_date.required' => 'تاريخ طلب الشراء مطلوب',
             'project_name.required' => 'اسم المشروع مطلوب',
             'project_number.required' => 'رقم المشروع مطلوب',
-            'address.required' => 'العنوان مطلوب',
-            'phone_number.required' => 'رقم التلفون مطلوب',
-            'email.required' => 'الايميل مطلوب',
-            'subject.required' => 'الموضوع مطلوب',
-            'sequencing.required' => ' التسلسل مطلوب',
-            'purchase_name.required' => 'البيان مطلوب',
-            'unit.required' => 'الحدة مطلوب',
-            'quantity.required' => 'الكمية مطلوبة',
-            'price.required' => 'السعر مطلوب',
             'total.required' => 'المجموع مطلوب',
             'discount.required' => 'الخصم مطلوب',
             'total_discount.required' => 'الاجمالي بعد الخصم مطلوب',
             'added_vat.required' => 'الضريبة المضافة مطلوب',
             'total_vat.required' => 'الاجمالي بعد الضريبة مطلوب',
-            'delivery_location.required' => 'موقع التسليم مطلوب',
-            'delivery_date.required' => 'تاريخ التسليم مطلوب',
-            'terms_payment.required' => 'شروط السداد مطلوب',
         ]);
 
         PurchaseOrder::findOrFail($id)->update([
@@ -318,7 +285,6 @@ class PurchaseOrderController extends Controller
             'total_vat' => $request->total_vat,
             'delivery_location' => $request->delivery_location,
             'delivery_date' => $request->delivery_date,
-            'terms_payment' => $request->terms_payment,
             'created_at' => Carbon::now(),
         ]);
 

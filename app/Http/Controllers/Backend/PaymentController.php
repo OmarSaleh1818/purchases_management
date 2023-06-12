@@ -214,18 +214,12 @@ class PaymentController extends Controller
             'supplier_name' => 'required',
             'price' => 'required',
             'due_date' => 'required',
-            'financial_provision' => 'required',
-            'number' => 'required',
-            'bank_name' => 'required',
         ], [
             'date.required' => 'التاريخ  مطلوب',
             'gentlemen.required' => 'اسم السادة مطلوب',
             'supplier_name.required' => 'اسم المورد مطلوب',
             'price.required' => 'المبلغ مطلوب',
             'due_date.required' => 'التاريخ المستحق للدفعة مطلوب',
-            'financial_provision.required' => 'المخصص المالي مطلوب',
-            'number.required' => 'الرقم مطلوب',
-            'bank_name.required' => 'البنك المسحوب عليه مطلوب',
         ]);
 
         Payment::insert([

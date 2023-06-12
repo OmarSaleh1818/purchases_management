@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('payment_id');
             $table->decimal('payment_price');
             $table->date('payment_date');
+            $table->boolean('payment_date')->default(0);
             $table->timestamps();
         });
     }

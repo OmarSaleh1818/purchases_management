@@ -15,6 +15,9 @@ use App\Http\Controllers\Company\SubSubCompanyController;
 use App\Http\Controllers\Company\AccountantController;
 use App\Http\Controllers\Company\ManagerController;
 use App\Http\Controllers\Company\ManagerPurchaseController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\RoleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -200,6 +203,12 @@ Route::post('/company/add',[CompanyController::class, 'CompanyStore'])->name('co
 Route::get('/company/edit/{id}',[CompanyController::class, 'CompanyEdit'])->name('company.edit');
 Route::post('/company/update/{id}',[CompanyController::class, 'CompanyUpdate'])->name('company.update');
 Route::get('/company/delete/{id}',[CompanyController::class, 'CompanyDelete'])->name('company.delete');
+
+Route::get('bank', [CompanyController::class, 'BankView']);
+Route::post('/bank/add',[CompanyController::class, 'BankStore'])->name('bank.add');
+Route::get('/bank/edit/{id}',[CompanyController::class, 'BankEdit'])->name('bank.edit');
+Route::post('/bank/update/{id}',[CompanyController::class, 'BankUpdate'])->name('bank.update');
+Route::get('/bank/delete/{id}',[CompanyController::class, 'BankDelete'])->name('bank.delete');
 // End Company Route
 
 // All Sub Company Route
@@ -220,5 +229,13 @@ Route::get('/subsubcompany/delete/{id}',[SubSubCompanyController::class, 'SubSub
 Route::get('/company/subcompany/ajax/{company_id}',[SubSubCompanyController::class, 'GetSubCompany']);
 Route::get('/company/sub-subcompany/ajax/{subcompany_id}',[SubSubCompanyController::class, 'GetSubSubCompany']);
 // End All Sub Sub Company Route
+
+Route::group(['middleware' => ['auth']], function() {
+
+    Route::resource('roles',RoleController::class);
+
+    Route::resource('users', UserController::class);
+
+});
 
 Route::get('/{page}', 'App\Http\Controllers\AdminController@index');

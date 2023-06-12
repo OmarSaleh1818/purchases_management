@@ -158,8 +158,7 @@ class ManagerPurchaseController extends Controller
     public function ManagerPaymentView() {
 
         $partials = PartialPayment::orderBy('id', 'ASC')->get();
-        $payments = Payment::orderBy('status_id', 'ASC')->orderBy('id', 'DESC')->get();
-        return view('manager_purchase.payment_view', compact( 'payments', 'partials'));
+        return view('manager_purchase.payment_view', compact(  'partials'));
     }
 
     public function ManagerPaymentEdit($id) {

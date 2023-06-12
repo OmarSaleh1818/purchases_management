@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_purchase_id');
             $table->integer('number_order');
+            $table->string('company_name');
             $table->date('date');
             $table->string('project_name');
             $table->integer('project_number');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('financial_provision');
             $table->integer('number');
             $table->string('bank_name');
+            $table->integer('status_id')->default(1);
             $table->text('description');
             $table->timestamps();
         });

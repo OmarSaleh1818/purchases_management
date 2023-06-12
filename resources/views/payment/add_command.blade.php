@@ -24,7 +24,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>التاريخ</label><span style="color: red;">  *</span>
-                    <input type="date" class="form-control" name="date" placeholder="التاريخ...">
+                    <input type="date" class="form-control" name="date" id="dateInput" placeholder="التاريخ...">
                     @error('date')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
@@ -32,11 +32,18 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>الرقم</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="payment_number" placeholder="الرقم...">
-                    @error('payment_number')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
+                    <h5>اختيار اسم الشركة <span class="text-danger">*</span></h5>
+                    <div class="controls">
+                        <select name="company_id" class="form-control">
+                            <option value="" selected="" disabled="">اختيار اسم الشركة</option>
+                            @foreach($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('company_id')
+                        <span class="text-danger"> {{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,17 +71,8 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>نوع العملة</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="currency_type" placeholder="نوع العملة...">
+                    <input type="text" class="form-control" name="currency_type" value="ريال سعودي" placeholder="نوع العملة...">
                     @error('currency_type')
-                    <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>فقط</label><span style="color: red;">  *</span>
-                    <input type="text" class="form-control" name="just" placeholder="فقط...">
-                    @error('just')
                     <span class="text-danger"> {{ $message }}</span>
                     @enderror
                 </div>
@@ -173,4 +171,23 @@
     <!-- main-content closed -->
 @endsection
 @section('js')
+    <script>
+        // Select the input field
+        var input = document.getElementById('dateInput');
+
+        // Create a new Date object for the current date
+        var currentDate = new Date();
+
+        // Format the date as YYYY-MM-DD for the input value
+        var formattedDate = currentDate.toISOString().split('T')[0];
+
+        // Set the initial value of the input field to the current date
+        input.value = formattedDate;
+
+        // Add an event listener to allow the user to change the date
+        input.addEventListener('input', function(event) {
+            var selectedDate = event.target.value;
+            console.log(selectedDate); // Output the selected date
+        });
+    </script>
 @endsection

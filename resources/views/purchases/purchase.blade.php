@@ -54,7 +54,7 @@
                                 <th class="border-bottom-0">المخصص المالي</th>
                                 <th class="border-bottom-0">الاستاذ</th>
                                 <th class="border-bottom-0">التاريخ</th>
-                                <th class="border-bottom-0">الوحدة</th>
+                                <th class="border-bottom-0">الرقم</th>
                                 <th class="border-bottom-0">مقدم الطلب</th>
                                 <th class="border-bottom-0">طباعة</th>
                                 <th class="border-bottom-0">التعديل</th>
@@ -71,7 +71,7 @@
                                     <td>{{ $purchase->financial_provision }}</td>
                                     <td>{{ $purchase->teacher_name }}</td>
                                     <td>{{ $purchase->date }}</td>
-                                    <td>{{ $purchase->teacher_name }}</td>
+                                    <td>{{ $purchase->number }}</td>
                                     <td>{{ $purchase->applicant }}</td>
                                     <td>
                                         @if($purchase->status_id == 1)

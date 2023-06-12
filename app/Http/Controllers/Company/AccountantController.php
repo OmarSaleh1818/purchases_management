@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Payment;
@@ -359,8 +360,9 @@ class AccountantController extends Controller
 
     public function FinanceCommandEdit($id) {
 
+        $companies = Company::all();
         $paymentOrder = PaymentOrder::find($id);
-        return view('accountant.command_edit', compact('paymentOrder'));
+        return view('accountant.command_edit', compact('paymentOrder', 'companies'));
     }
 
     public function FinanceCommandUpdate(Request $request) {

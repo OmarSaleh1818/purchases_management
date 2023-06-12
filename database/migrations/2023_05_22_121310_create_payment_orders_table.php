@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payment_orders', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->integer('payment_number');
+            $table->integer('company_id');
             $table->string('benefit_name');
             $table->integer('price');
             $table->string('currency_type');
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('financial_provision');
             $table->integer('number_financial');
             $table->string('purchase_name');
+            $table->integer('status_id')->default(1);
             $table->timestamps();
         });
     }
